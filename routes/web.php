@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('layout.master');
+    return view('layouts.master');
 });
 
 
@@ -23,6 +23,8 @@ Route::get('/login', function () {
     return view('login');
 });
 
-Route::prefix('faculty')->group(function () {
+Route::prefix('faculty')->name('faculty.')->group(function () {
     Route::get('/', [FacultyController::class, 'index']);
+    Route::get('/api', [FacultyController::class, 'api'])->name('api');
+    Route::post('/add', [FacultyController::class, 'store'])->name('store');
 });

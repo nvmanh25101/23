@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Faculty;
 use Illuminate\Http\Request;
+use Yajra\Datatables\Datatables;
 
 class FacultyController extends Controller
 {
@@ -17,6 +18,11 @@ class FacultyController extends Controller
         return view('faculty.index');
     }
 
+    public function api()
+    {
+        return Datatables::of(Faculty::query())->make(true);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -24,7 +30,6 @@ class FacultyController extends Controller
      */
     public function create()
     {
-        //
     }
 
     /**
@@ -35,7 +40,7 @@ class FacultyController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        dd($request->all());
     }
 
     /**
