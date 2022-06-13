@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FacultyController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,3 +23,6 @@ Route::get('/login', function () {
     return view('login');
 });
 
+Route::prefix('faculty')->group(function () {
+    Route::get('/', [FacultyController::class, 'index']);
+});
