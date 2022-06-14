@@ -2,25 +2,45 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Falcuty\StoreRequest;
 use App\Models\Faculty;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\View;
 use Yajra\Datatables\Datatables;
 
 class FacultyController extends Controller
 {
+    private object $model;
+    private string $table;
+
+    public function __construct()
+    {
+        $this->model = Faculty::query();
+        $this->table = (new Faculty())->getTable();
+
+        View::share('title', ucwords($this->table));
+    }
+
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function index()
     {
-        return view('faculty.index');
+        return view("$this->table.index");
     }
 
     public function api()
     {
-        return Datatables::of(Faculty::query())->make(true);
+        return Datatables::of(Faculty::query())
+            ->editColumn('created_at', function ($object) {
+                return $object->date_created_at;
+            })
+            ->addColumn('edit', function ($object) {
+                return route("$this->table.edit", $object);
+            })
+            ->make(true);
     }
 
     /**
@@ -32,15 +52,10 @@ class FacultyController extends Controller
     {
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function store(StoreRequest $request)
     {
-        dd($request->all());
+        $this->model->create($request->validated());
+        return redirect()->route("$this->table.index");
     }
 
     /**

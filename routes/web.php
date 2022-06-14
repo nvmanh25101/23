@@ -23,8 +23,9 @@ Route::get('/login', function () {
     return view('login');
 });
 
-Route::prefix('faculty')->name('faculty.')->group(function () {
-    Route::get('/', [FacultyController::class, 'index']);
+Route::prefix('faculties')->name('faculties.')->group(function () {
+    Route::get('/', [FacultyController::class, 'index'])->name('index');
     Route::get('/api', [FacultyController::class, 'api'])->name('api');
     Route::post('/add', [FacultyController::class, 'store'])->name('store');
+    Route::get('/edit/{faculty}', [FacultyController::class, 'edit'])->name('edit');
 });
