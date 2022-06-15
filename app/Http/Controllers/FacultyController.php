@@ -4,14 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Models\Faculty;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
 use Yajra\Datatables\Datatables;
 
 class FacultyController extends Controller
 {
-
+    public $ControllerName = 'Khoa';
     public function __construct()
     {
+        $pageTitle =  Route::currentRouteAction();
+        $pageTitle = explode('@', $pageTitle)[1];
+        view()->share('ControllerName', $this->ControllerName);
+        view()->share('pageTitle', $pageTitle);
     }
 
     /**

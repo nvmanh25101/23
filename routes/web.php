@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\FacultyController;
+use App\Http\Controllers\TestController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('layouts.master');
-});
+})->name('home');
 
 
 Route::get('/login', function () {
@@ -42,4 +43,8 @@ Route::prefix('faculty')->name('faculty.')->group(function () {
         return abort(404);
     });
     Route::delete('/delete', [FacultyController::class, 'destroy'])->name('destroy');
+});
+
+Route::prefix('test')->name('test.')->group(function () {
+    Route::get('/', [TestController::class, 'edit']);
 });
