@@ -7,13 +7,13 @@
                         <li class="breadcrumb-item"><a href="{{ route('home') }}"><i class="uil-home-alt"></i>
                                 Trang chủ</a></li>
                         @if (URL::current() !== route('home'))
-                            <li class="breadcrumb-item"><a href="">{{ $ControllerName }}</a></li>
+                            <li class="breadcrumb-item"><a href="">{{ $ControllerName ?? '' }}</a></li>
                             <li class="breadcrumb-item active" aria-current="page">{{ __('title.' . $pageTitle) }}</li>
                         @endif
                     </ol>
                 </nav>
             </div>
-            <h4 class="page-title">Vertical</h4>
+            <h4 class="page-title">{{ $ControllerName ?? '' }}</h4>
         </div>
     </div>
 </div>

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\FacultyController;
+use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TestController;
 use Illuminate\Support\Facades\Route;
 
@@ -25,7 +26,7 @@ Route::get('/login', function () {
 });
 
 Route::prefix('faculty')->name('faculty.')->group(function () {
-    Route::get('/', [FacultyController::class, 'index']);
+    Route::get('/', [FacultyController::class, 'index'])->name('index');
     Route::get('/api', [FacultyController::class, 'api'])->name('api');
     Route::get('/show/{id?}', [FacultyController::class, 'show'])->name('show');
     // 
@@ -43,6 +44,19 @@ Route::prefix('faculty')->name('faculty.')->group(function () {
         return abort(404);
     });
     Route::delete('/delete', [FacultyController::class, 'destroy'])->name('destroy');
+});
+
+Route::group([
+    'as'     => 'subjects.',
+    'prefix' => 'subjects',
+], static function () {
+    Route::get('/', [SubjectController::class, 'index'])->name('index');
+    Route::get('/api', [SubjectController::class, 'api'])->name('api');
+    Route::get('/create', [SubjectController::class, 'create'])->name('create');
+    Route::post('/store', [SubjectController::class, 'store'])->name('store');
+    Route::get('/edit/{subject}', [SubjectController::class, 'edit'])->name('edit');
+    Route::put('/edit/{subject}', [SubjectController::class, 'update'])->name('update');
+    Route::delete('/destroy/{subject}', [SubjectController::class, 'destroy'])->name('destroy');
 });
 
 Route::prefix('test')->name('test.')->group(function () {
