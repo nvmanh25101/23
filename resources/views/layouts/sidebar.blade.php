@@ -37,16 +37,21 @@
                     <li>
                         <a href="dashboard-analytics.html">Analytics</a>
                     </li>
-                    <li>
-                        <a href="dashboard-crm.html">CRM</a>
-                    </li>
-                    <li>
-                        <a href="index.html">Ecommerce</a>
-                    </li>
-                    <li>
-                        <a href="dashboard-projects.html">Projects</a>
-                    </li>
                 </ul>
+            </li>
+
+            <li class="side-nav-item">
+                <a href="{{ route('faculty.index') }}" class="side-nav-link">
+                    <i class="uil-home-alt"></i>
+                    <span> Khoa </span>
+                </a>
+            </li>
+
+            <li class="side-nav-item">
+                <a href="{{ route('subjects.index') }}" class="side-nav-link">
+                    <i class="uil-home-alt"></i>
+                    <span> Môn học </span>
+                </a>
             </li>
 
         </ul>
