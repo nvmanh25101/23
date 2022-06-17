@@ -8,4 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class Major extends Model
 {
     use HasFactory;
+    protected $fillable = ['name', 'faculty_id'];
+
+    public function faculty()
+    {
+        return $this->belongsTo(Faculty::class);
+    }
+
+    public function getCreatedAtAttribute($value)
+    {
+        return (date("d/m/Y", strtotime($value)));
+    }
 }

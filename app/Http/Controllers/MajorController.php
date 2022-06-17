@@ -2,19 +2,49 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Faculty;
 use App\Models\Major;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use Yajra\Datatables\Datatables;
 
 class MajorController extends Controller
 {
+    public $ControllerName = 'Ngành học';
+    public function __construct()
+    {
+        $pageTitle =  Route::currentRouteAction();
+        $pageTitle = explode('@', $pageTitle)[1];
+        view()->share('ControllerName', $this->ControllerName);
+        view()->share('pageTitle', $pageTitle);
+    }
+
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function index()
     {
-        //
+        $faculties = Faculty::all();
+        return view("major.index", compact('faculties'));
+    }
+
+    public function api()
+    {
+        return Datatables::of(Major::query()->with('faculty:id,name'))
+            ->addColumn('action', function ($id) {
+                return "<button type='button' class='btn action-icon' data-toggle='modal' data-target='#update-major' data-id='$id->id'>
+                <i class='mdi mdi-pencil'></i>
+                </button>
+                <button type='button' class='btn action-icon' data-toggle='modal' data-target='#confirm-delete' data-id='$id->id'>
+                <i class='mdi mdi-delete'></i>
+                </button>";
+            })
+            ->editColumn('faculty', function ($major) {
+                return $major->faculty->name;
+            })
+            ->make(true);
     }
 
     /**
@@ -24,18 +54,14 @@ class MajorController extends Controller
      */
     public function create()
     {
-        //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        $major = new Major();
+        $major->fill($request->all());
+        $major->save();
+        return back()->with('success', 'Thêm thành công');
     }
 
     /**
@@ -44,9 +70,18 @@ class MajorController extends Controller
      * @param  \App\Models\Major  $major
      * @return \Illuminate\Http\Response
      */
-    public function show(Major $major)
+    public function show($id)
     {
-        //
+        $major = Major::find($id);
+        if ($major == null) {
+            return response()->json([
+                'status' => 'Not Found',
+            ], 404);
+        }
+        return response()->json([
+            'status' => 200,
+            'major' => $major,
+        ]);
     }
 
     /**
@@ -55,10 +90,7 @@ class MajorController extends Controller
      * @param  \App\Models\Major  $major
      * @return \Illuminate\Http\Response
      */
-    public function edit(Major $major)
-    {
-        //
-    }
+
 
     /**
      * Update the specified resource in storage.
@@ -67,9 +99,12 @@ class MajorController extends Controller
      * @param  \App\Models\Major  $major
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Major $major)
+    public function update(Request $request)
     {
-        //
+        $major = Major::findOrFail($request->id);
+        $major->fill($request->all());
+        $major->save();
+        return back()->with('success', 'Sửa thành công');
     }
 
     /**
@@ -78,8 +113,10 @@ class MajorController extends Controller
      * @param  \App\Models\Major  $major
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Major $major)
+    public function destroy(Request $request)
     {
-        //
+        $major = Major::findOrFail($request->id);
+        $major->delete();
+        return back()->with('success', 'Xóa thành công');
     }
 }

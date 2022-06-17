@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\FacultyController;
+use App\Http\Controllers\MajorController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TestController;
 use Illuminate\Support\Facades\Route;
@@ -61,4 +62,26 @@ Route::group([
 
 Route::prefix('test')->name('test.')->group(function () {
     Route::get('/', [TestController::class, 'edit']);
+});
+
+
+Route::prefix('major')->name('major.')->group(function () {
+    Route::get('/', [MajorController::class, 'index'])->name('index');
+    Route::get('/api', [MajorController::class, 'api'])->name('api');
+    Route::get('/show/{id?}', [MajorController::class, 'show'])->name('show');
+    // 
+    Route::get('/add', function () {
+        return abort(404);
+    });
+    Route::post('/add', [MajorController::class, 'store'])->name('store');
+    // 
+    Route::get('/edit', function () {
+        return abort(404);
+    });
+    Route::post('/edit', [MajorController::class, 'update'])->name('update');
+    // 
+    Route::get('/delete', function () {
+        return abort(404);
+    });
+    Route::delete('/delete', [MajorController::class, 'destroy'])->name('destroy');
 });
