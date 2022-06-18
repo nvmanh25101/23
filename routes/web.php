@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AcademicYearController;
 use App\Http\Controllers\FacultyController;
 use App\Http\Controllers\MajorController;
 use App\Http\Controllers\SubjectController;
@@ -84,4 +85,25 @@ Route::prefix('major')->name('major.')->group(function () {
         return abort(404);
     });
     Route::delete('/delete', [MajorController::class, 'destroy'])->name('destroy');
+});
+
+Route::prefix('academic-year')->name('academicYear.')->group(function () {
+    Route::get('/', [AcademicYearController::class, 'index'])->name('index');
+    Route::get('/api', [AcademicYearController::class, 'api'])->name('api');
+    Route::get('/show/{id?}', [AcademicYearController::class, 'show'])->name('show');
+    // 
+    Route::get('/add', function () {
+        return abort(404);
+    });
+    Route::post('/add', [AcademicYearController::class, 'store'])->name('store');
+    // 
+    Route::get('/edit', function () {
+        return abort(404);
+    });
+    Route::post('/edit', [AcademicYearController::class, 'update'])->name('update');
+    // 
+    Route::get('/delete', function () {
+        return abort(404);
+    });
+    Route::delete('/delete', [AcademicYearController::class, 'destroy'])->name('destroy');
 });

@@ -4,17 +4,46 @@ namespace App\Http\Controllers;
 
 use App\Models\AcademicYear;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use Yajra\Datatables\Datatables;
 
 class AcademicYearController extends Controller
 {
+    public $ControllerName = 'Niên khóa';
+    public function __construct()
+    {
+        $pageTitle =  Route::currentRouteAction();
+        $pageTitle = explode('@', $pageTitle)[1];
+        view()->share('ControllerName', $this->ControllerName);
+        view()->share('pageTitle', $pageTitle);
+    }
+
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function index()
     {
-        //
+        return view("academicYear.index");
+    }
+
+    public function api()
+    {
+        return Datatables::of(AcademicYear::query())
+            ->addColumn('action', function ($id) {
+                return "<button type='button' class='btn action-icon' data-toggle='modal' data-target='#update-academicYear' data-id='$id->id'>
+                <i class='mdi mdi-pencil'></i>
+                </button>
+                <button type='button' class='btn action-icon' data-toggle='modal' data-target='#confirm-delete' data-id='$id->id'>
+                <i class='mdi mdi-delete'></i>
+                </button>";
+            })
+            ->addColumn('academicYear', function ($academicYear) {
+                $year_end = $academicYear->year_start + $academicYear->year_total;
+                return $academicYear->year_start . '-' . $year_end;
+            })
+            ->make(true);
     }
 
     /**
@@ -24,18 +53,14 @@ class AcademicYearController extends Controller
      */
     public function create()
     {
-        //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        $academicYear = new AcademicYear();
+        $academicYear->fill($request->all());
+        $academicYear->save();
+        return back()->with('success', 'Thêm thành công');
     }
 
     /**
@@ -44,9 +69,18 @@ class AcademicYearController extends Controller
      * @param  \App\Models\AcademicYear  $academicYear
      * @return \Illuminate\Http\Response
      */
-    public function show(AcademicYear $academicYear)
+    public function show($id)
     {
-        //
+        $academicYear = AcademicYear::find($id);
+        if ($academicYear == null) {
+            return response()->json([
+                'status' => 'Not Found',
+            ], 404);
+        }
+        return response()->json([
+            'status' => 200,
+            'academicYear' => $academicYear,
+        ]);
     }
 
     /**
@@ -55,10 +89,7 @@ class AcademicYearController extends Controller
      * @param  \App\Models\AcademicYear  $academicYear
      * @return \Illuminate\Http\Response
      */
-    public function edit(AcademicYear $academicYear)
-    {
-        //
-    }
+
 
     /**
      * Update the specified resource in storage.
@@ -67,9 +98,12 @@ class AcademicYearController extends Controller
      * @param  \App\Models\AcademicYear  $academicYear
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, AcademicYear $academicYear)
+    public function update(Request $request)
     {
-        //
+        $academicYear = AcademicYear::findOrFail($request->id);
+        $academicYear->fill($request->all());
+        $academicYear->save();
+        return back()->with('success', 'Sửa thành công');
     }
 
     /**
@@ -78,8 +112,10 @@ class AcademicYearController extends Controller
      * @param  \App\Models\AcademicYear  $academicYear
      * @return \Illuminate\Http\Response
      */
-    public function destroy(AcademicYear $academicYear)
+    public function destroy(Request $request)
     {
-        //
+        $academicYear = AcademicYear::findOrFail($request->id);
+        $academicYear->delete();
+        return back()->with('success', 'Xóa thành công');
     }
 }
