@@ -78,9 +78,9 @@ class AcademicYearController extends Controller
             ], 404);
         }
         return response()->json([
-            'status' => 200,
+            'status' => true,
             'academicYear' => $academicYear,
-        ]);
+        ], 200);
     }
 
     /**
