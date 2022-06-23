@@ -44,7 +44,7 @@ class SubjectController extends Controller
 
     public function create()
     {
-        $faculties = Faculty::query()->get();
+        $faculties = Faculty::query()->get(['id', 'name']);
         return view('subjects.create', [
             'faculties' => $faculties,
         ]);
@@ -65,7 +65,7 @@ class SubjectController extends Controller
     public function edit($subject)
     {
         $subject = Subject::query()->findOrFail($subject);
-        $faculties = Faculty::query()->get();
+        $faculties = Faculty::query()->get(['id', 'name']);
         return view('subjects.edit', [
             'subject' => $subject,
             'faculties' => $faculties,
