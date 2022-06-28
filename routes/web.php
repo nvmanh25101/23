@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\AcademicYearController;
+use App\Http\Controllers\ClassroomController;
 use App\Http\Controllers\FacultyController;
 use App\Http\Controllers\MajorController;
+use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TestController;
 use Illuminate\Support\Facades\Route;
@@ -106,4 +108,47 @@ Route::prefix('academic-year')->name('academicYear.')->group(function () {
         return abort(404);
     });
     Route::delete('/delete', [AcademicYearController::class, 'destroy'])->name('destroy');
+});
+
+Route::prefix('classroom')->name('student.')->group(function () {
+    Route::get('/', [ClassroomController::class, 'index'])->name('index');
+    Route::get('/api', [ClassroomController::class, 'api'])->name('api');
+    Route::get('/show/{id?}', [ClassroomController::class, 'show'])->name('show');
+    // 
+    Route::get('/add', function () {
+        return abort(404);
+    });
+    Route::post('/add', [ClassroomController::class, 'store'])->name('store');
+    // 
+    Route::get('/edit', function () {
+        return abort(404);
+    });
+    Route::post('/edit', [ClassroomController::class, 'update'])->name('update');
+    // 
+    Route::get('/delete', function () {
+        return abort(404);
+    });
+    Route::delete('/delete', [ClassroomController::class, 'destroy'])->name('destroy');
+});
+
+
+Route::prefix('student')->name('student.')->group(function () {
+    Route::get('/', [StudentController::class, 'index'])->name('index');
+    Route::get('/api', [StudentController::class, 'api'])->name('api');
+    Route::get('/show/{id?}', [StudentController::class, 'show'])->name('show');
+    // 
+    Route::get('/add', function () {
+        return abort(404);
+    });
+    Route::post('/add', [StudentController::class, 'store'])->name('store');
+    // 
+    Route::get('/edit', function () {
+        return abort(404);
+    });
+    Route::post('/edit', [StudentController::class, 'update'])->name('update');
+    // 
+    Route::get('/delete', function () {
+        return abort(404);
+    });
+    Route::delete('/delete', [StudentController::class, 'destroy'])->name('destroy');
 });
