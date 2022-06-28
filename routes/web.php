@@ -110,7 +110,7 @@ Route::prefix('academic-year')->name('academicYear.')->group(function () {
     Route::delete('/delete', [AcademicYearController::class, 'destroy'])->name('destroy');
 });
 
-Route::prefix('classroom')->name('student.')->group(function () {
+Route::prefix('classroom')->name('classroom.')->group(function () {
     Route::get('/', [ClassroomController::class, 'index'])->name('index');
     Route::get('/api', [ClassroomController::class, 'api'])->name('api');
     Route::get('/show/{id?}', [ClassroomController::class, 'show'])->name('show');

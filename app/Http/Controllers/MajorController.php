@@ -41,7 +41,7 @@ class MajorController extends Controller
                 <i class='mdi mdi-delete'></i>
                 </button>";
             })
-            ->editColumn('faculty', function ($major) {
+            ->addColumn('faculty', function ($major) {
                 return $major->faculty->name;
             })
             ->make(true);

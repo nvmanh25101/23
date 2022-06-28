@@ -6,11 +6,11 @@
 
 @section('content')
     <div class="col-12">
-        <div id="majors-datatable_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+        <div id="classrooms-datatable_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
             <div class="row mb-2">
                 <div class="col-sm-4">
-                    <button type="button" class="btn btn-danger mb-2" data-toggle="modal" data-target="#add-major"><i
-                            class="mdi mdi-plus-circle mr-2"></i> Thêm ngành học mới
+                    <button type="button" class="btn btn-danger mb-2" data-toggle="modal" data-target="#add-classroom"><i
+                            class="mdi mdi-plus-circle mr-2"></i> Thêm lớp học mới
                     </button>
                 </div>
                 <div class="col-sm-8">
@@ -22,17 +22,16 @@
                 </div><!-- end col-->
             </div>
             <div class="row mb-2">
-                <div class="col-12 d-flex justify-content-end " id="export_div"></div>
+                <div class="col-12 d-flex justify-content-end" id="export_div"></div>
             </div>
             <div class="row">
                 <div class="col-sm-12">
-                    <table class="table dt-responsive nowrap" id="major-table">
+                    <table class="table dt-responsive nowrap" id="classroom-table">
                         <thead>
                             <tr role="row">
                                 <th>#ID</th>
-                                <th>Khoa</th>
+                                <th>Lớp</th>
                                 <th>Tên ngành</th>
-                                <th>Ngày thành lập</th>
                                 <th>Quản trị</th>
                             </tr>
                         </thead>
@@ -43,22 +42,22 @@
             </div>
         </div>
         {{-- add --}}
-        <div id="add-major" class="modal fade form-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div id="add-classroom" class="modal fade form-modal" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" style="">
                 <div class="modal-content">
                     <div class="modal-body">
-                        <form action="{{ route('major.store') }}" class="pl-3 pr-3" method="post" novalidate>
+                        <form action="{{ route('classroom.store') }}" class="pl-3 pr-3" method="post" novalidate>
                             @csrf
                             <div class="form-group">
-                                <label for="name">Tên ngành học</label>
+                                <label for="name">Tên lớp học</label>
                                 <input class="form-control" type="text" id="name" name="name" required>
                             </div>
                             <div class="form-group">
-                                <label for="faculty">Chọn khoa</label>
-                                <select class="form-control faculty_id" id="faculty" name="faculty_id" required>
+                                <label for="major">Chọn ngành</label>
+                                <select class="form-control major_id" id="major" name="major_id" required>
                                     <option></option>
-                                    @foreach ($faculties as $faculty)
-                                        <option value="{{ $faculty->id }}">{{ $faculty->name }}
+                                    @foreach ($majors as $major)
+                                        <option value="{{ $major->id }}">{{ $major->name }}
                                         </option>
                                     @endforeach
                                 </select>
@@ -72,24 +71,24 @@
             </div>
         </div>
         {{-- update --}}
-        <div id="update-major" class="modal fade form-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div id="update-classroom" class="modal fade form-modal" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-body">
-                        <form action="{{ route('major.update') }}" class="pl-3 pr-3" method="post" novalidate>
+                        <form action="{{ route('classroom.update') }}" class="pl-3 pr-3" method="post" novalidate>
                             @csrf
-                            <input type="hidden" name="id" class="major-id">
+                            <input type="hidden" name="id" class="classroom-id">
                             <div class="form-group">
-                                <label for="major-name">Tên ngành học</label>
-                                <input class="form-control" type="text" id="major-name" name="name" required>
+                                <label for="classroom-name">Tên lớp học</label>
+                                <input class="form-control" type="text" id="classroom-name" name="name" required>
                             </div>
                             <div class="form-group">
-                                <label for="faculty_id">Chọn khoa</label>
-                                <select class="form-control faculty_id" name="faculty_id" id="faculty_id" required>
+                                <label for="major_id">Chọn ngành</label>
+                                <select class="form-control major_id" name="major_id" id="major_id" required>
                                     <option></option>
-                                    @foreach ($faculties as $faculty)
-                                        <option value="{{ $faculty->id }}" data-id="{{ $faculty->id }}">
-                                            {{ $faculty->name }}
+                                    @foreach ($majors as $major)
+                                        <option value="{{ $major->id }}" data-id="{{ $major->id }}">
+                                            {{ $major->name }}
                                         </option>
                                     @endforeach
                                 </select>
@@ -115,10 +114,10 @@
                         Bạn chắc chắn với điều này?
                     </div>
                     <div class="modal-footer">
-                        <form action="{{ route('major.destroy') }}" method="post">
+                        <form action="{{ route('classroom.destroy') }}" method="post">
                             @csrf
                             @method('DELETE')
-                            <input type="hidden" name="id" class="major-id">
+                            <input type="hidden" name="id" class="classroom-id">
                             <button type="submit" class="btn btn-danger" id="confirm-delete-button">Xóa</button>
                             <button type="button" class="btn btn-light" data-dismiss="modal">Hủy</button>
                         </form>
@@ -137,11 +136,11 @@
     <script src="{{ asset('js/select2.min.js') }}"></script>
     <script>
         $(document).ready(function() {
-            var table = $('#major-table').DataTable({
+            var table = $('#classroom-table').DataTable({
                 processing: true,
                 serverSide: true,
                 select: true,
-                ajax: "{{ route('major.api') }}",
+                ajax: "{{ route('classroom.api') }}",
                 dom: "B<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>tipr",
                 buttons: [{
                         extend: 'copyHtml5',
@@ -183,15 +182,13 @@
                 }],
                 columns: [{
                         data: 'id',
+
                     },
                     {
                         data: 'name',
                     },
                     {
-                        data: 'faculty',
-                    },
-                    {
-                        data: 'created_at',
+                        data: 'major',
                     },
                     {
                         data: 'action',
@@ -206,16 +203,17 @@
                         let id = $(this).attr('data-id');
                         $.ajax({
                             type: "GET",
-                            url: "{{ route('major.show') }}/" + id,
+                            url: "{{ route('classroom.show') }}/" + id,
                             success: function(response) {
-                                $('#major-name').val(response.major.name);
-                                $('.major-id').val(response.major.id);
-                                $('#faculty_id').val(response.major.faculty_id);
-                                $('#faculty_id').trigger('change');
+                                $('#classroom-name').val(response.classroom.name);
+                                $('.classroom-id').val(response.classroom.id);
+                                $('#major_id').val(response.classroom
+                                    .major_id);
+                                $('#major_id').trigger('change');
                             },
                             error: function(response) {
-                                $('#major-name').val('');
-                                $('.major-id').val('');
+                                $('#classroom-name').val('');
+                                $('.classroom-id').val('');
                                 $.toast({
                                     heading: 'Thông báo',
                                     text: 'Có lỗi xảy ra',
@@ -235,7 +233,7 @@
 
     <script>
         $(document).ready(function() {
-            let button = $("#major-table_wrapper > .dt-buttons");
+            let button = $("#classroom-table_wrapper > .dt-buttons");
             $('.buttons-colvis').addClass('btn-success');
             $('.buttons-colvis').append('<i class="mdi mdi-settings"></i>');
             $('.buttons-colvis').parent().appendTo('#fillter');
@@ -260,8 +258,8 @@
             if (select.val() == null) {
                 return false;
             }
-            $('.faculty_id').select2({
-                placeholder: "Chọn khoa",
+            $('.major_id').select2({
+                placeholder: "Chọn ngành",
             });
         });
     </script>

@@ -200,23 +200,25 @@
                     });
                 },
             });
-
-            let button = $("#faculty-table_wrapper > .dt-buttons");
-            $('.buttons-colvis').addClass('btn-success');
-            $('.buttons-colvis').append('<i class="mdi mdi-settings"></i>');
-            $('.buttons-colvis').parent().appendTo('#fillter');
-            button.appendTo('#export_div');
-            let wrapButton = button.parent().parent();
-            wrapButton.css('display', 'none')
-            $('#export').click(function(e) {
-                wrapButton.slideToggle()
-                e.preventDefault();
-            });
-
-            let validator = $('.form-modal').jbvalidator({
-                errorMessage: true,
-                successClass: true,
-            });
+        });
+    </script>
+    <script>
+        let button = $("#faculty-table_wrapper > .dt-buttons");
+        $('.buttons-colvis').addClass('btn-success');
+        $('.buttons-colvis').append('<i class="mdi mdi-settings"></i>');
+        $('.buttons-colvis').parent().appendTo('#fillter');
+        button.appendTo('#export_div');
+        let wrapButton = button.parent().parent();
+        wrapButton.css('display', 'none')
+        $('#export').click(function(e) {
+            wrapButton.slideToggle()
+            e.preventDefault();
+        });
+    </script>
+    <script>
+        let validator = $('.form-modal').jbvalidator({
+            errorMessage: true,
+            successClass: true,
         });
     </script>
     @if (session('success'))

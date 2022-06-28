@@ -62,6 +62,13 @@
             </li>
 
             <li class="side-nav-item">
+                <a href="{{ route('classroom.index') }}" class="side-nav-link">
+                    <i class="uil-home-alt"></i>
+                    <span> Lớp học</span>
+                </a>
+            </li>
+
+            <li class="side-nav-item">
                 <a href="{{ route('academicYear.index') }}" class="side-nav-link">
                     <i class="uil-home-alt"></i>
                     <span> Niên khóa</span>

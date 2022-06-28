@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Classroom;
+use App\Models\Major;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use Yajra\Datatables\Datatables;
 
 class ClassroomController extends Controller
 {
@@ -12,11 +15,37 @@ class ClassroomController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public $ControllerName = 'Lớp học';
+    public function __construct()
+    {
+        $pageTitle =  Route::currentRouteAction();
+        $pageTitle = explode('@', $pageTitle)[1];
+        view()->share('ControllerName', $this->ControllerName);
+        view()->share('pageTitle', $pageTitle);
+    }
     public function index()
     {
-        //
+        $majors = Major::all();
+        return view('classroom.index', compact('majors'));
     }
 
+
+    public function api()
+    {
+        return Datatables::of(Classroom::query()->with('major:name,id'))
+            ->addColumn('action', function ($id) {
+                return "<button type='button' class='btn action-icon' data-toggle='modal' data-target='#update-classroom' data-id='$id->id'>
+                <i class='mdi mdi-pencil'></i>
+                </button>
+                <button type='button' class='btn action-icon' data-toggle='modal' data-target='#confirm-delete' data-id='$id->id'>
+                <i class='mdi mdi-delete'></i>
+                </button>";
+            })
+            ->addColumn('major', function ($major) {
+                return $major->major->name;
+            })
+            ->make(true);
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -24,7 +53,6 @@ class ClassroomController extends Controller
      */
     public function create()
     {
-        //
     }
 
     /**
@@ -35,7 +63,10 @@ class ClassroomController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $classroom = new Classroom();
+        $classroom->fill($request->all());
+        $classroom->save();
+        return back()->with('success', 'Thêm thành công');
     }
 
     /**
@@ -44,9 +75,18 @@ class ClassroomController extends Controller
      * @param  \App\Models\Classroom  $classroom
      * @return \Illuminate\Http\Response
      */
-    public function show(Classroom $classroom)
+    public function show($id)
     {
-        //
+        $classroom = Classroom::find($id);
+        if ($classroom == null) {
+            return response()->json([
+                'status' => 'Not Found',
+            ], 404);
+        }
+        return response()->json([
+            'status' => 200,
+            'classroom' => $classroom,
+        ]);
     }
 
     /**
@@ -69,7 +109,10 @@ class ClassroomController extends Controller
      */
     public function update(Request $request, Classroom $classroom)
     {
-        //
+        $classroom = Classroom::findOrFail($request->id);
+        $classroom->fill($request->all());
+        $classroom->save();
+        return back()->with('success', 'Sửa thành công');
     }
 
     /**
@@ -78,8 +121,10 @@ class ClassroomController extends Controller
      * @param  \App\Models\Classroom  $classroom
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Classroom $classroom)
+    public function destroy(Request $request)
     {
-        //
+        $classroom = Classroom::findOrFail($request->id);
+        $classroom->delete();
+        return back()->with('success', 'Xóa thành công');
     }
 }
