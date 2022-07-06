@@ -28,29 +28,23 @@
             <li class="side-nav-title side-nav-item">Navigation</li>
 
             <li class="side-nav-item">
-                <a href="javascript: void(0);" class="side-nav-link">
+                <a href="{{ route('home') }}" class="side-nav-link">
                     <i class="uil-home-alt"></i>
-                    <span class="badge badge-success float-right">4</span>
                     <span> Dashboards </span>
                 </a>
-                <ul class="side-nav-second-level" aria-expanded="false">
-                    <li>
-                        <a href="dashboard-analytics.html">Analytics</a>
-                    </li>
-                </ul>
+            </li>
+
+            <li class="side-nav-item">
+                <a href="{{ route('academicYear.index') }}" class="side-nav-link">
+                    <i class="uil-home-alt"></i>
+                    <span> Niên khóa</span>
+                </a>
             </li>
 
             <li class="side-nav-item">
                 <a href="{{ route('faculty.index') }}" class="side-nav-link">
                     <i class="uil-home-alt"></i>
                     <span> Khoa </span>
-                </a>
-            </li>
-
-            <li class="side-nav-item">
-                <a href="{{ route('subjects.index') }}" class="side-nav-link">
-                    <i class="uil-home-alt"></i>
-                    <span> Môn học </span>
                 </a>
             </li>
 
@@ -69,9 +63,16 @@
             </li>
 
             <li class="side-nav-item">
-                <a href="{{ route('academicYear.index') }}" class="side-nav-link">
+                <a href="{{ route('subjects.index') }}" class="side-nav-link">
                     <i class="uil-home-alt"></i>
-                    <span> Niên khóa</span>
+                    <span> Môn học </span>
+                </a>
+            </li>
+
+            <li class="side-nav-item">
+                <a href="{{ route('course.index') }}" class="side-nav-link">
+                    <i class="uil-home-alt"></i>
+                    <span> Học phần </span>
                 </a>
             </li>
 

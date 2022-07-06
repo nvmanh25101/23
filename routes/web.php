@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\AcademicYearController;
+use App\Http\Controllers\AjaxController;
 use App\Http\Controllers\ClassroomController;
+use App\Http\Controllers\CourseController;
 use App\Http\Controllers\FacultyController;
 use App\Http\Controllers\MajorController;
 use App\Http\Controllers\StudentController;
@@ -28,6 +30,10 @@ Route::get('/', function () {
 Route::get('/login', function () {
     return view('login');
 });
+
+Route::get('/load-subject/{faculty_id?}', [AjaxController::class, 'loadSubject'])->name('loadSubject');
+
+Route::get('/load-teacher/{faculty_id?}', [AjaxController::class, 'loadTeacher'])->name('loadTeacher');
 
 Route::prefix('faculty')->name('faculty.')->group(function () {
     Route::get('/', [FacultyController::class, 'index'])->name('index');
@@ -131,24 +137,15 @@ Route::prefix('classroom')->name('classroom.')->group(function () {
     Route::delete('/delete', [ClassroomController::class, 'destroy'])->name('destroy');
 });
 
+Route::prefix('course')->name('course.')->group(function () {
+    Route::get('/', [CourseController::class, 'index'])->name('index');
+    Route::get('/api', [CourseController::class, 'api'])->name('api');
+    Route::get('/show/{id?}', [CourseController::class, 'show'])->name('show');
+    Route::get('/add', [CourseController::class, 'create'])->name('add');
+    Route::post('/add', [CourseController::class, 'store'])->name('store');
 
-Route::prefix('student')->name('student.')->group(function () {
-    Route::get('/', [StudentController::class, 'index'])->name('index');
-    Route::get('/api', [StudentController::class, 'api'])->name('api');
-    Route::get('/show/{id?}', [StudentController::class, 'show'])->name('show');
-    // 
-    Route::get('/add', function () {
-        return abort(404);
-    });
-    Route::post('/add', [StudentController::class, 'store'])->name('store');
-    // 
-    Route::get('/edit', function () {
-        return abort(404);
-    });
-    Route::post('/edit', [StudentController::class, 'update'])->name('update');
-    // 
-    Route::get('/delete', function () {
-        return abort(404);
-    });
-    Route::delete('/delete', [StudentController::class, 'destroy'])->name('destroy');
+    Route::get('/edit/{course}', [CourseController::class, 'edit'])->name('edit');
+    Route::post('/edit/{course}', [CourseController::class, 'update'])->name('update');
+
+    Route::delete('/delete', [CourseController::class, 'destroy'])->name('destroy');
 });

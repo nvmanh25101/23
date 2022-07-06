@@ -2,20 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Classroom;
-use App\Models\Major;
+use App\Models\Course;
+use App\Models\Faculty;
+use App\Models\Subject;
+use App\Models\Teacher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Yajra\Datatables\Datatables;
 
-class ClassroomController extends Controller
+class CourseController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public $ControllerName = 'Lớp học';
+    public $ControllerName = 'Học phần';
     public function __construct()
     {
         $pageTitle =  Route::currentRouteAction();
@@ -23,26 +25,37 @@ class ClassroomController extends Controller
         view()->share('ControllerName', $this->ControllerName);
         view()->share('pageTitle', $pageTitle);
     }
+
     public function index()
     {
-        $majors = Major::all();
-        return view('classroom.index', compact('majors'));
+        $subjects = Subject::all();
+        return view("course.index", compact('subjects'));
     }
-
 
     public function api()
     {
-        return Datatables::of(Classroom::query()->with('major:name,id'))
+        return Datatables::of(Course::query()->with('teacher', 'subject'))
             ->addColumn('action', function ($id) {
-                return "<button type='button' class='btn action-icon' data-toggle='modal' data-target='#update-classroom' data-id='$id->id'>
+                $routeEditCourse = route('course.edit', $id);
+                return "<a href='$routeEditCourse' type='button' class='btn action-icon'>
                 <i class='mdi mdi-pencil'></i>
-                </button>
+                </a>
                 <button type='button' class='btn action-icon' data-toggle='modal' data-target='#confirm-delete' data-id='$id->id'>
                 <i class='mdi mdi-delete'></i>
                 </button>";
             })
-            ->addColumn('major', function ($major) {
-                return $major->major->name;
+            ->editColumn('subject_id', function ($course) {
+                return $course->subject->name;
+            })
+            ->editColumn('teacher_id', function ($course) {
+                return $course->teacher->name;
+            })
+            ->addColumn('course_code', function ($course) {
+                $str = $course->subject->name;
+                $ret = '';
+                foreach (explode(' ', $str) as $word)
+                    $ret .= strtoupper($word[0]);
+                return $course->id . "-" . $ret;
             })
             ->make(true);
     }
@@ -51,8 +64,10 @@ class ClassroomController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
+        $faculties = Faculty::all();
+        return view('course.create', compact('faculties'));
     }
 
     /**
@@ -63,68 +78,70 @@ class ClassroomController extends Controller
      */
     public function store(Request $request)
     {
-        $classroom = new Classroom();
-        $classroom->fill($request->all());
-        $classroom->save();
+        $course = new Course();
+        $course->fill($request->all());
+        $course->save();
         return redirect()->back()->with('success', 'Thêm thành công');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Classroom  $classroom
+     * @param  \App\Models\Course  $course
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        $classroom = Classroom::find($id);
-        if ($classroom == null) {
+        $course = Course::find($id);
+        if ($course == null) {
             return response()->json([
                 'status' => 'Not Found',
             ], 404);
         }
         return response()->json([
             'status' => 200,
-            'classroom' => $classroom,
+            'course' => $course,
         ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Classroom  $classroom
+     * @param  \App\Models\Course  $course
      * @return \Illuminate\Http\Response
      */
-    public function edit(Classroom $classroom)
+    public function edit(Course $course)
     {
-        //
+        $faculties = Faculty::all();
+        $course->load('subject');
+        $faculty_id = $course->subject->faculty_id;
+        return view('course.edit', compact('faculties', 'course', 'faculty_id'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Classroom  $classroom
+     * @param  \App\Models\Course  $course
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Classroom $classroom)
+    public function update(Request $request, Course $course)
     {
-        $classroom = Classroom::findOrFail($request->id);
-        $classroom->fill($request->all());
-        $classroom->save();
+        $course->fill($request->all());
+        $course->save();
         return redirect()->back()->with('success', 'Sửa thành công');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Classroom  $classroom
+     * @param  \App\Models\Course  $course
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request)
     {
-        $classroom = Classroom::findOrFail($request->id);
-        $classroom->delete();
+        $course = Course::findOrFail($request->id);
+        $course->delete();
         return redirect()->back()->with('success', 'Xóa thành công');
     }
 }
