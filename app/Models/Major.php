@@ -10,9 +10,14 @@ class Major extends Model
     use HasFactory;
     protected $fillable = ['name', 'faculty_id'];
 
+    public function classrooms()
+    {
+        return $this->hasMany(Classroom::class);
+    }
+
     public function faculty()
     {
-        return $this->belongsTo(Faculty::class);
+        return $this->belongsTo(Faculty::class, 'faculty_id', 'id');
     }
 
     public function getCreatedAtAttribute($value)

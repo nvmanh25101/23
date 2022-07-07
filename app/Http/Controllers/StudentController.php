@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Student;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use Yajra\Datatables\Datatables;
 
 class StudentController extends Controller
 {
@@ -12,11 +14,32 @@ class StudentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public $ControllerName = 'Sinh viên';
+    public function __construct()
+    {
+        $pageTitle =  Route::currentRouteAction();
+        $pageTitle = explode('@', $pageTitle)[1];
+        view()->share('ControllerName', $this->ControllerName);
+        view()->share('pageTitle', $pageTitle);
+    }
     public function index()
     {
-        //
+        return view('student.index');
     }
 
+    public function api()
+    {
+        return DataTables::of(Student::query())
+            ->addColumn('action', function ($id) {
+                return "<button type='button' class='btn action-icon' data-toggle='modal' data-target='#update-academicYear' data-id='$id->id'>
+            <i class='mdi mdi-pencil'></i>
+            </button>
+            <button type='button' class='btn action-icon' data-toggle='modal' data-target='#confirm-delete' data-id='$id->id'>
+            <i class='mdi mdi-delete'></i>
+            </button>";
+            })
+            ->make(true);
+    }
     /**
      * Show the form for creating a new resource.
      *

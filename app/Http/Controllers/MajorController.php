@@ -41,7 +41,7 @@ class MajorController extends Controller
                 <i class='mdi mdi-delete'></i>
                 </button>";
             })
-            ->editColumn('faculty', function ($major) {
+            ->addColumn('faculty', function ($major) {
                 return $major->faculty->name;
             })
             ->make(true);
@@ -61,7 +61,7 @@ class MajorController extends Controller
         $major = new Major();
         $major->fill($request->all());
         $major->save();
-        return back()->with('success', 'Thêm thành công');
+        return redirect()->back()->with('success', 'Thêm thành công');
     }
 
     /**
@@ -104,7 +104,7 @@ class MajorController extends Controller
         $major = Major::findOrFail($request->id);
         $major->fill($request->all());
         $major->save();
-        return back()->with('success', 'Sửa thành công');
+        return redirect()->back()->with('success', 'Sửa thành công');
     }
 
     /**
@@ -117,6 +117,6 @@ class MajorController extends Controller
     {
         $major = Major::findOrFail($request->id);
         $major->delete();
-        return back()->with('success', 'Xóa thành công');
+        return redirect()->back()->with('success', 'Xóa thành công');
     }
 }
