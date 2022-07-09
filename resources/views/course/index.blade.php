@@ -6,12 +6,12 @@
 
 @section('content')
     <div class="col-12">
-        <div id="majors-datatable_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+        <div id="courses-datatable_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
             <div class="row mb-2">
                 <div class="col-sm-4">
-                    <button type="button" class="btn btn-danger mb-2" data-toggle="modal" data-target="#add-major"><i
-                            class="mdi mdi-plus-circle mr-2"></i> Thêm ngành học mới
-                    </button>
+                    <a href="{{ route('course.add') }}" class="btn btn-danger mb-2"><i
+                            class="mdi mdi-plus-circle mr-2"></i> Thêm học phần mới
+                    </a>
                 </div>
                 <div class="col-sm-8">
                     <div class="text-sm-right">
@@ -26,79 +26,20 @@
             </div>
             <div class="row">
                 <div class="col-sm-12">
-                    <table class="table dt-responsive nowrap" id="major-table">
+                    <table class="table dt-responsive nowrap" id="course-table">
                         <thead>
                             <tr role="row">
                                 <th>#ID</th>
-                                <th>Khoa</th>
-                                <th>Tên ngành</th>
-                                <th>Ngày thành lập</th>
+                                <th>Mã học phần</th>
+                                <th>Tên môn học</th>
+                                <th>Tên giáo viên</th>
+                                <th>Số buổi học/tuần</th>
                                 <th>Quản trị</th>
                             </tr>
                         </thead>
                         <tbody>
                         </tbody>
                     </table>
-                </div>
-            </div>
-        </div>
-        {{-- add --}}
-        <div id="add-major" class="modal fade form-modal" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" style="">
-                <div class="modal-content">
-                    <div class="modal-body">
-                        <form action="{{ route('major.store') }}" class="pl-3 pr-3" method="post" novalidate>
-                            @csrf
-                            <div class="form-group">
-                                <label for="name">Tên ngành học</label>
-                                <input class="form-control" type="text" id="name" name="name" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="faculty">Chọn khoa</label>
-                                <select class="form-control faculty_id" id="faculty" name="faculty_id" required>
-                                    <option></option>
-                                    @foreach ($faculties as $faculty)
-                                        <option value="{{ $faculty->id }}">{{ $faculty->name }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="form-group text-center ">
-                                <button class="btn btn-primary w-100" type="submit">Thêm mới</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-        {{-- update --}}
-        <div id="update-major" class="modal fade form-modal" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-body">
-                        <form action="{{ route('major.update') }}" class="pl-3 pr-3" method="post" novalidate>
-                            @csrf
-                            <input type="hidden" name="id" class="major-id">
-                            <div class="form-group">
-                                <label for="major-name">Tên ngành học</label>
-                                <input class="form-control" type="text" id="major-name" name="name" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="faculty_id">Chọn khoa</label>
-                                <select class="form-control faculty_id" name="faculty_id" id="faculty_id" required>
-                                    <option></option>
-                                    @foreach ($faculties as $faculty)
-                                        <option value="{{ $faculty->id }}" data-id="{{ $faculty->id }}">
-                                            {{ $faculty->name }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="form-group text-center ">
-                                <button class="btn btn-primary w-100" type="submit">Sửa</button>
-                            </div>
-                        </form>
-                    </div>
                 </div>
             </div>
         </div>
@@ -115,10 +56,10 @@
                         Bạn chắc chắn với điều này?
                     </div>
                     <div class="modal-footer">
-                        <form action="{{ route('major.destroy') }}" method="post">
+                        <form action="{{ route('course.destroy') }}" method="post">
                             @csrf
                             @method('DELETE')
-                            <input type="hidden" name="id" class="major-id">
+                            <input type="hidden" name="id" class="course-id">
                             <button type="submit" class="btn btn-danger" id="confirm-delete-button">Xóa</button>
                             <button type="button" class="btn btn-light" data-dismiss="modal">Hủy</button>
                         </form>
@@ -137,11 +78,11 @@
     <script src="{{ asset('js/select2.min.js') }}"></script>
     <script>
         $(document).ready(function() {
-            var table = $('#major-table').DataTable({
+            var table = $('#course-table').DataTable({
                 processing: true,
                 serverSide: true,
                 select: true,
-                ajax: "{{ route('major.api') }}",
+                ajax: "{{ route('course.api') }}",
                 dom: "B<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>tipr",
                 buttons: [{
                         extend: 'copyHtml5',
@@ -185,13 +126,17 @@
                         data: 'id',
                     },
                     {
-                        data: 'name',
+                        data: 'course_code',
                     },
                     {
-                        data: 'faculty',
+                        data: 'subject_id',
+                    },
+
+                    {
+                        data: 'teacher_id',
                     },
                     {
-                        data: 'created_at',
+                        data: 'weekday',
                     },
                     {
                         data: 'action',
@@ -206,16 +151,14 @@
                         let id = $(this).attr('data-id');
                         $.ajax({
                             type: "GET",
-                            url: "{{ route('major.show') }}/" + id,
+                            url: "{{ route('course.show') }}/" + id,
                             success: function(response) {
-                                $('#major-name').val(response.major.name);
-                                $('.major-id').val(response.major.id);
-                                $('#faculty_id').val(response.major.faculty_id);
-                                $('#faculty_id').trigger('change');
+                                $('#course-name').val(response.course.name);
+                                $('.course-id').val(response.course.id);
                             },
                             error: function(response) {
-                                $('#major-name').val('');
-                                $('.major-id').val('');
+                                $('#course-name').val('');
+                                $('.course-id').val('');
                                 $.toast({
                                     heading: 'Thông báo',
                                     text: 'Có lỗi xảy ra',
@@ -235,7 +178,7 @@
 
     <script>
         $(document).ready(function() {
-            let button = $("#major-table_wrapper > .dt-buttons");
+            let button = $("#course-table_wrapper > .dt-buttons");
             $('.buttons-colvis').addClass('btn-success');
             $('.buttons-colvis').append('<i class="mdi mdi-settings"></i>');
             $('.buttons-colvis').parent().appendTo('#fillter');
@@ -251,16 +194,7 @@
 
     <script>
         $(document).ready(function() {
-            let validator = $('.form-modal')
-            validator.jbvalidator({
-                errorMessage: true,
-                successClass: true,
-            });
-            let select = validator.find('select');
-            if (select.val() == null) {
-                return false;
-            }
-            $('.faculty_id').select2({
+            $('.subject_id').select2({
                 placeholder: "Chọn khoa",
             });
         });

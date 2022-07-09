@@ -8,4 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Classroom extends Model
 {
     use HasFactory;
+    protected $fillable = ['name', 'major_id'];
+
+    public function major()
+    {
+        return $this->belongsTo(Major::class);
+    }
 }

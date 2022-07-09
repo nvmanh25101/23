@@ -10,6 +10,12 @@ class Faculty extends Model
 {
     use HasFactory;
     protected $fillable = ['name'];
+
+    public function majors()
+    {
+        return $this->hasMany(Major::class);
+    }
+
     public function getCreatedAtAttribute($value)
     {
         return (date("d/m/Y", strtotime($value)));

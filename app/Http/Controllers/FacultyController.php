@@ -57,7 +57,7 @@ class FacultyController extends Controller
         $faculty = new Faculty();
         $faculty->fill($request->all());
         $faculty->save();
-        return back()->with('success', 'Thêm thành công');
+        return redirect()->back()->with('success', 'Thêm thành công');
     }
 
     /**
@@ -100,7 +100,7 @@ class FacultyController extends Controller
         $faculty = Faculty::findOrFail($request->id);
         $faculty->name = $request->name;
         $faculty->save();
-        return back()->with('success', 'Sửa thành công');
+        return redirect()->back()->with('success', 'Sửa thành công');
     }
 
     /**
@@ -113,6 +113,6 @@ class FacultyController extends Controller
     {
         $faculty = Faculty::findOrFail($request->id);
         $faculty->delete();
-        return back()->with('success', 'Xóa thành công');
+        return redirect()->back()->with('success', 'Xóa thành công');
     }
 }
