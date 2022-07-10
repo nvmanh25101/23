@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Faculty;
 use App\Models\Subject;
+use App\Models\Teacher;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -17,5 +18,6 @@ class DatabaseSeeder extends Seeder
     {
         Faculty::factory(10)->create();
         Subject::factory(10)->create();
+        Teacher::factory(100)->create();
     }
 }
