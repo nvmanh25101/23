@@ -4,84 +4,95 @@
 @endpush
 @section('content')
     <div class="col-12">
-        <form method="post" action="{{ route('teachers.store') }}" class="needs-validation" novalidate>
+        <form method="post" action="{{ route('teachers.update', $teacher) }}" class="needs-validation" id="form-edit" novalidate>
             @csrf
+            @method('PUT')
             <div class="row">
                 <div class="form-group col-8">
                     <label>Họ tên</label>
-                    <input type="text" class="form-control" name="name" placeholder="Họ và tên" required>
+                    <input type="text" class="form-control" name="name" value="{{ $teacher->name }}" required>
                 </div>
                 <div class="form-group col-4">
                     <label>Giới tính</label>
                     <select class="form-control" name="gender">
-                        <option>Nam</option>
-                        <option>Nữ</option>
+                        <option value="1" @if($teacher->name === 1) selected @endif>Nam</option>
+                        <option value="0" @if($teacher->name === 0) selected @endif>Nữ</option>
                     </select>
                 </div>
             </div>
 
-
             <div class="form-group mb-3">
                 <label>Ngày sinh</label>
-                <input type="text" class="form-control" name="birthdate" data-provide="datepicker"
-                       data-date-autoclose="true">
+                <input type="date" value="{{ $teacher->date }}" class="form-control birthdate-input" name="birthdate">
             </div>
+
             <div class="row">
                 <div class="form-group col-8">
                     <label>Địa chỉ thường trú</label>
-                    <input type="text" class="form-control" name="address" placeholder="Địa chỉ" required>
+                    <input type="text" class="form-control" name="address" value="{{ $teacher->address }}" required>
                 </div>
 
                 <div class="form-group col-4">
                     <label>Số điện thoại</label>
-                    <input type="text" class="form-control" name="phone" placeholder="Số điện thoại" required>
+                    <input type="text" class="form-control" name="phone" value="{{ $teacher->phone }}" required>
                 </div>
             </div>
 
             <div class="row">
                 <div class="form-group mb-3 col-8">
                     <label>Khoa</label>
-                    {{--                <select class="form-control" name="faculty_id">--}}
-                    {{--                    @foreach($faculties as $faculty)--}}
-                    {{--                        <option value="{{ $faculty->id }}">--}}
-                    {{--                            {{ $faculty->name }}--}}
-                    {{--                        </option>--}}
-                    {{--                    @endforeach--}}
-                    {{--                </select>--}}
-                </div>
-
-                <div class="form-group mb-3 col-4">
-                    <label>Ngành</label>
-                    <select class="js-example-basic-multiple" name="majors[]" multiple="multiple">
-                        <option value="AL">Alabama</option>
-                        ...
-                        <option value="WY">Wyoming</option>
+                    <select class="form-control" name="faculty_id">
+                        @foreach($faculties as $faculty)
+                            <option value="{{ $faculty->id }}">
+                                {{ $faculty->name }}
+                            </option>
+                        @endforeach
                     </select>
-                    {{--                <select class="form-control" name="faculty_id">--}}
-                    {{--                    @foreach($faculties as $faculty)--}}
-                    {{--                        <option value="{{ $faculty->id }}">--}}
-                    {{--                            {{ $faculty->name }}--}}
-                    {{--                        </option>--}}
-                    {{--                    @endforeach--}}
-                    {{--                </select>--}}
                 </div>
             </div>
+
+            <div class="form-group mb-3">
+                <label>Chức vụ</label>
+                <select class="form-control" name="level">
+                    @foreach($arrTeacherLevel as $option => $value)
+                        <option value="{{ $value }}"
+                                @if($teacher->level === $value)
+                                    selected
+                                @endif
+                        >
+                            {{ $option }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+
             <div class="form-group mb-3">
                 <label>Trạng thái</label>
-                <select class="form-control" name="status">
-                    <option>Nghỉ</option>
-                    <option></option>
-                </select>
+                @foreach($arrTeacherStatus as $option => $value)
+                    <br>
+                    <div class="d-flex align-content-center font-16">
+                        <input type="radio" name="status" value="{{ $value }}" class="mr-1"
+                               @if ($teacher->status === $value)
+                                   checked
+                                @endif
+                        >
+                        {{ $option }}
+                    </div>
+                @endforeach
             </div>
             <button class="btn btn-primary mb-3" type="submit">Cập nhật</button>
         </form>
     </div>
 @endsection
 @push('js')
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
         $(document).ready(function () {
-            $('.js-example-basic-multiple').select2();
+
+           let birthdate = $('.birthdate-input');
+           birthdate.change(function () {
+                console.log(birthdate.val());
+            });
         });
+
     </script>
 @endpush

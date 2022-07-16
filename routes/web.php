@@ -58,7 +58,7 @@ Route::prefix('faculty')->name('faculty.')->group(function () {
 });
 
 Route::group([
-    'as'     => 'subjects.',
+    'as' => 'subjects.',
     'prefix' => 'subjects',
 ], static function () {
     Route::get('/', [SubjectController::class, 'index'])->name('index');
@@ -118,17 +118,18 @@ Route::prefix('academic-year')->name('academicYear.')->group(function () {
 });
 
 Route::group([
-    'as'     => 'teachers.',
+    'as' => 'teachers.',
     'prefix' => 'teachers',
 ], static function () {
     Route::get('/', [TeacherController::class, 'index'])->name('index');
     Route::get('/api', [TeacherController::class, 'api'])->name('api');
     Route::get('/create', [TeacherController::class, 'create'])->name('create');
     Route::post('/store', [TeacherController::class, 'store'])->name('store');
-    Route::get('/edit/{subject}', [TeacherController::class, 'edit'])->name('edit');
-    Route::put('/edit/{subject}', [TeacherController::class, 'update'])->name('update');
-    Route::delete('/destroy/{subject}', [TeacherController::class, 'destroy'])->name('destroy');
+    Route::get('/edit/{teacher}', [TeacherController::class, 'edit'])->name('edit');
+    Route::put('/edit/{teacher}', [TeacherController::class, 'update'])->name('update');
+    Route::delete('/destroy/{teacher}', [TeacherController::class, 'destroy'])->name('destroy');
 });
+
 Route::prefix('classroom')->name('classroom.')->group(function () {
     Route::get('/', [ClassroomController::class, 'index'])->name('index');
     Route::get('/api', [ClassroomController::class, 'api'])->name('api');

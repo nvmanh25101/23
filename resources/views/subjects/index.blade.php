@@ -5,7 +5,7 @@
 @section('content')
     <div class="col-12">
         <a href="{{ route('subjects.create') }}" class="btn btn-outline-primary">Thêm mới</a>
-        <table id="subject-table" class="table table-striped dt-responsive nowrap w-100">
+        <table id="data-table" class="table table-striped dt-responsive nowrap w-100">
             <thead>
             <tr>
                 <th>#</th>
@@ -25,7 +25,7 @@
     <script src="{{ asset('js/vfs_fonts.min.js') }}"></script>
     <script>
         $(function () {
-            let table = $('#subject-table').DataTable({
+            let table = $('#data-table').DataTable({
                 processing: true,
                 serverSide: true,
                 ajax: '{{ route('subjects.api') }}',
