@@ -33,6 +33,7 @@
                                 <th>Mã học phần</th>
                                 <th>Tên môn học</th>
                                 <th>Tên giáo viên</th>
+                                <th>Số tín chỉ</th>
                                 <th>Số buổi học/tuần</th>
                                 <th>Quản trị</th>
                             </tr>
@@ -134,6 +135,9 @@
 
                     {
                         data: 'teacher_id',
+                    },
+                    {
+                        data: 'subject.credit',
                     },
                     {
                         data: 'weekday',
