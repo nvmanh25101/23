@@ -4,6 +4,7 @@ use App\Http\Controllers\AcademicYearController;
 use App\Http\Controllers\AjaxController;
 use App\Http\Controllers\ClassroomController;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\CourseDetailController;
 use App\Http\Controllers\FacultyController;
 use App\Http\Controllers\MajorController;
 use App\Http\Controllers\StudentController;
@@ -70,7 +71,7 @@ Route::group([
 });
 
 Route::prefix('test')->name('test.')->group(function () {
-    Route::get('/', [TestController::class, 'edit']);
+    Route::get('/', [TestController::class, 'test']);
 });
 
 
@@ -148,4 +149,18 @@ Route::prefix('course')->name('course.')->group(function () {
     Route::post('/edit/{course}', [CourseController::class, 'update'])->name('update');
 
     Route::delete('/delete', [CourseController::class, 'destroy'])->name('destroy');
+});
+
+Route::prefix('course-detail')->name('courseDetail.')->group(function () {
+    Route::get('/', [CourseDetailController::class, 'index'])->name('index');
+    Route::get('/api', [CourseDetailController::class, 'api'])->name('api');
+    Route::get('/show/{id?}', [CourseDetailController::class, 'show'])->name('show');
+
+    Route::get('/add', [CourseDetailController::class, 'create'])->name('add');
+    Route::post('/add', [CourseDetailController::class, 'store'])->name('store');
+
+    Route::get('/edit', [CourseDetailController::class, 'edit'])->name('edit');
+    Route::post('/edit', [CourseDetailController::class, 'update'])->name('update');
+
+    Route::delete('/delete', [CourseDetailController::class, 'destroy'])->name('destroy');
 });

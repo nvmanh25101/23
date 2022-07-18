@@ -76,6 +76,13 @@
                 </a>
             </li>
 
+            <li class="side-nav-item">
+                <a href="{{ route('courseDetail.index') }}" class="side-nav-link">
+                    <i class="uil-home-alt"></i>
+                    <span> Xếp lịch học </span>
+                </a>
+            </li>
+
         </ul>
         <!-- End Sidebar -->
 

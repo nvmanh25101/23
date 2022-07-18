@@ -50,13 +50,6 @@ class CourseController extends Controller
             ->editColumn('teacher_id', function ($course) {
                 return $course->teacher->name;
             })
-            ->addColumn('course_code', function ($course) {
-                $str = $course->subject->name;
-                $ret = '';
-                foreach (explode(' ', $str) as $word)
-                    $ret .= strtoupper($word[0]);
-                return $course->id . "-" . $ret;
-            })
             ->make(true);
     }
     /**
@@ -80,6 +73,16 @@ class CourseController extends Controller
     {
         $course = new Course();
         $course->fill($request->all());
+        $course->load('subject');
+        $currentId = Course::query()->max('id') + 1;
+        $str = $course->subject->name;
+        $ret = '';
+        foreach (explode(' ', $str) as $word) {
+
+            $ret .= strtoupper($word[0]);
+            $course_code = $request->id . "-" . $ret;
+        }
+        $course->course_code = $course_code;
         $course->save();
         return redirect()->back()->with('success', 'Thêm thành công');
     }
@@ -93,6 +96,7 @@ class CourseController extends Controller
     public function show($id)
     {
         $course = Course::find($id);
+        $course->load('subject', 'teacher');
         if ($course == null) {
             return response()->json([
                 'status' => 'Not Found',
@@ -100,7 +104,9 @@ class CourseController extends Controller
         }
         return response()->json([
             'status' => 200,
-            'course' => $course,
+            'subject' => $course->subject->name,
+            'teacher' => $course->teacher->name,
+            'weekday' => $course->weekday,
         ]);
     }
 
