@@ -4,14 +4,16 @@
 @endpush
 @section('content')
     <div class="col-12">
-        <a href="{{ route('subjects.create') }}" class="btn btn-outline-primary">Thêm mới</a>
+        <a href="{{ route('teachers.create') }}" class="btn btn-outline-primary">Thêm mới</a>
         <table id="data-table" class="table table-striped dt-responsive nowrap w-100">
             <thead>
             <tr>
                 <th>#</th>
                 <th>Tên</th>
-                <th>Tín chỉ</th>
+{{--                <th>Thông tin</th>--}}
                 <th>Khoa</th>
+                <th>Chức vụ</th>
+                <th>Trạng thái</th>
                 <th>Sửa</th>
                 <th>Xóa</th>
             </tr>
@@ -28,12 +30,14 @@
             let table = $('#data-table').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: '{{ route('subjects.api') }}',
+                ajax: '{{ route('teachers.api') }}',
                 columns: [
                     {data: 'id', name: 'id'},
                     {data: 'name', name: 'name'},
-                    {data: 'credit', name: 'credit'},
+                    // {data: 'infor', name: 'infor'},
                     {data: 'faculty_name', name: 'faculty_name'},
+                    {data: 'level', name: 'level'},
+                    {data: 'status', name: 'status'},
                     {
                         data: 'edit',
                         orderable: false,
@@ -57,7 +61,7 @@
                 ]
             });
 
-             $(document).on('click', '.btn-delete', function () {
+            $(document).on('click', '.btn-delete', function () {
                 let row = $(this).parents('tr');
                 let form = $(this).parents('form');
                 $.ajax({
@@ -73,7 +77,7 @@
                         alert('Error');
                     },
                 });
+            });
         });
-    });
     </script>
 @endpush

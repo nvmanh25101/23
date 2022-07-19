@@ -49,6 +49,13 @@
             </li>
 
             <li class="side-nav-item">
+                <a href="{{ route('teachers.index') }}" class="side-nav-link">
+                    <i class="uil-home-alt"></i>
+                    <span> Giảng viên </span>
+                </a>
+            </li>
+
+            <li class="side-nav-item">
                 <a href="{{ route('major.index') }}" class="side-nav-link">
                     <i class="uil-home-alt"></i>
                     <span> Ngành học</span>

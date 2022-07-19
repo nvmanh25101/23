@@ -10,7 +10,7 @@
 
             <div class="form-group mb-3">
                 <label>Tín chỉ</label>
-                <input type="number" name="credit" class="form-control" required min="1" max="5">
+                <input type="number" data-toggle="touchspin" name="credit" class="form-control" required min="1" max="5">
             </div>
             <div class="form-group mb-3">
                 <label>Khoa</label>
