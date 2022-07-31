@@ -129,6 +129,7 @@ Route::group([
     Route::get('/edit/{teacher}', [TeacherController::class, 'edit'])->name('edit');
     Route::put('/edit/{teacher}', [TeacherController::class, 'update'])->name('update');
     Route::delete('/destroy/{teacher}', [TeacherController::class, 'destroy'])->name('destroy');
+    Route::post('/import-csv', [TeacherController::class, 'importCsv'])->name('import_csv');
 });
 
 Route::prefix('classroom')->name('classroom.')->group(function () {

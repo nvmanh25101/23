@@ -6,10 +6,15 @@ use App\Enums\TeacherLevelEnum;
 use App\Enums\TeacherStatusEnum;
 use App\Http\Requests\Teacher\StoreRequest;
 use App\Http\Requests\Teacher\UpdateRequest;
+use App\Imports\TeachersImport;
 use App\Models\Faculty;
 use App\Models\Teacher;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
+use Maatwebsite\Excel\Facades\Excel;
+use Throwable;
 use Yajra\DataTables\DataTables;
 
 class TeacherController extends Controller
@@ -95,7 +100,7 @@ class TeacherController extends Controller
             ]);
     }
 
-    public function update(UpdateRequest $request,$teacherId)
+    public function update(UpdateRequest $request, $teacherId)
     {
         $teacher = Teacher::query()->findOrFail($teacherId);
         $teacher->fill($request->validated());
@@ -112,5 +117,19 @@ class TeacherController extends Controller
         $arr['status'] = true;
         $arr['message'] = 'Xóa thành công';
         return response($arr, 200);
+    }
+
+    public function importCsv(Request $request)
+    {
+        try {
+            Excel::import(new TeachersImport(), $request->file('file'));
+            return response()->json([
+                'success' => 'Import thành công',
+            ]);
+        } catch (Throwable $e) {
+            return response()->json([
+                'error' => 'Import thất bại',
+            ], 404);
+        }
     }
 }
