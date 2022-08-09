@@ -14,6 +14,142 @@
    License:none (public domain)
 */
 
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+    display: block;
+}
+body {
+    line-height: 1.4;
+}
+blockquote,
+q {
+    quotes: none;
+}
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+    content: "";
+    content: none;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+html {
+    overflow-x: hidden;
+}
+body {
+    display: flex;
+    color: #b3b3b3;
+    letter-spacing: 0;
+    height: 100vh;
+    background: #fafbff;
+    align-items: center;
+    font-family: "Poppins";
+    overflow-x: hidden;
+}
+body * {
+    outline: none !important;
+}
 h1,
 h2,
 h3,
@@ -177,8 +313,8 @@ a,
 }
 
 .console-schedular {
-    width: 90%;
-    margin: 0 auto;
+    height: 100%;
+    width: 100%;
     background: #fff;
     padding: 8px;
     -webkit-border-radius: 5px;
@@ -205,9 +341,7 @@ a,
     border-radius: 3px;
     overflow: hidden;
 }
-.schedular-body {
-    display: grid;
-}
+
 .date-changer input.new-datepicker {
     background: #ffffff;
     border: 0;
@@ -328,55 +462,30 @@ a,
     overflow: auto;
 }
 /*=========== Timeslot Grids =============*/
-.grids-head {
-    display: flex;
-    margin: 0 10px;
-    border-left: 1px #838f9c solid;
-    border-top: 1px #838f9c solid;
-    border-right: 1px #838f9c solid;
-}
 .grids {
+    overflow: auto;
     height: 100%;
 }
-.timeslot:before {
-    display: none;
-    content: "";
-    position: absolute;
-    right: 0;
-    width: 1px;
-    height: 80%;
-    opacity: 0.7;
-    top: 10%;
-    background: linear-gradient(transparent, #cdcdcd, transparent);
-}
 .timeslot {
-    min-width: calc(100% / 8);
     text-align: center;
-    /* position: relative; */
+    position: relative;
     font-size: 12px;
-    padding: 5px;
     background: #fff;
     cursor: pointer;
-    height: 60px;
+    line-height: 100px;
+    margin: 1px;
+    flex: 1;
 }
 .grids-row {
     display: flex;
-    margin: 0 10px;
-    border-left: 1px #838f9c solid;
-    border-right: 1px #838f9c solid;
 }
 .grids-body {
     position: relative;
+    width: 100%;
     width: -moz-fit-content;
 }
-.timeslot:first-child {
-    border-bottom: 1px #838f9c solid;
-}
-.timeslot + .timeslot {
-    border-left: 1px #838f9c solid;
-    border-bottom: 1px #838f9c solid;
-}
-.timeslot:hover {
+
+.grids-row .timeslot:hover {
     color: #999;
 }
 .ui-draggable-dragging {
@@ -1189,7 +1298,4 @@ table.custom-table.style2 tbody tr.selected td {
     .remember {
         margin: 0 0 10px;
     }
-}
-.not-active {
-    pointer-events: none;
 }

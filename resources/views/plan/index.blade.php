@@ -9,8 +9,8 @@
         <div id="courses-datatable_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
             <div class="row mb-2">
                 <div class="col-sm-4">
-                    <a href="{{ route('course.add') }}" class="btn btn-danger mb-2"><i class="mdi mdi-plus-circle mr-2"></i>
-                        Thêm học phần mới
+                    <a href="{{ route('plan.add') }}" class="btn btn-danger mb-2"><i class="mdi mdi-plus-circle mr-2"></i>
+                        Thêm chương trình khung
                     </a>
                 </div>
                 <div class="col-sm-8">
