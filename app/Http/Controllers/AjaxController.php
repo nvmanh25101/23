@@ -22,4 +22,12 @@ class AjaxController extends Controller
         $teachers = Teacher::query()->where('faculty_id', $faculty_id)->get();
         return $teachers;
     }
+    public function loadFaculty(Request $request)
+    {
+        return Faculty::query()->where('name', 'like', '%' . $request->get('q') . '%')
+            ->get([
+                'id',
+                'name',
+            ]);
+    }
 }

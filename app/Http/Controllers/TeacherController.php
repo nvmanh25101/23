@@ -60,7 +60,22 @@ class TeacherController extends Controller
             ->addColumn('destroy', function ($object) {
                 return route('teachers.destroy', $object);
             })
-            ->rawColumns(['infor', 'infor'])
+            ->filterColumn('level', function ($query, $keyword) {
+                if ($keyword !== '-1') {
+                    $query->where('level', $keyword);
+                }
+            })
+            ->filterColumn('status', function ($query, $keyword) {
+                if ($keyword !== '-1') {
+                    $query->where('status', $keyword);
+                }
+            })
+            ->filterColumn('faculty_name', function ($query, $keyword) {
+                $query->whereHas('faculty', function ($query) use ($keyword) {
+                    $query->where('id', $keyword);
+                });
+            })
+//            ->rawColumns(['infor', 'infor'])
             ->make(true);
     }
 

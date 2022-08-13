@@ -36,6 +36,7 @@ Route::get('/login', function () {
 Route::get('/load-subject/{faculty_id?}', [AjaxController::class, 'loadSubject'])->name('loadSubject');
 
 Route::get('/load-teacher/{faculty_id?}', [AjaxController::class, 'loadTeacher'])->name('loadTeacher');
+Route::get('/load-facultyName/faculty_name', [AjaxController::class, 'loadFaculty'])->name('loadFacultyName');
 
 Route::prefix('faculty')->name('faculty.')->group(function () {
     Route::get('/', [FacultyController::class, 'index'])->name('index');
