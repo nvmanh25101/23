@@ -32,6 +32,7 @@
                                 <th>#ID</th>
                                 <th>Khoa</th>
                                 <th>Tên ngành</th>
+                                <th>Mã ngành</th>
                                 <th>Ngày thành lập</th>
                                 <th>Quản trị</th>
                             </tr>
@@ -52,6 +53,10 @@
                             <div class="form-group">
                                 <label for="name">Tên ngành học</label>
                                 <input class="form-control" type="text" id="name" name="name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="code">Mã ngành học</label>
+                                <input class="form-control" type="text" id="code" name="code" required>
                             </div>
                             <div class="form-group">
                                 <label for="faculty">Chọn khoa</label>
@@ -82,6 +87,10 @@
                             <div class="form-group">
                                 <label for="major-name">Tên ngành học</label>
                                 <input class="form-control" type="text" id="major-name" name="name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="code">Mã ngành học</label>
+                                <input class="form-control" type="text" id="major-code" required readonly>
                             </div>
                             <div class="form-group">
                                 <label for="faculty_id">Chọn khoa</label>
@@ -135,6 +144,7 @@
     <script src="{{ asset('js/vfs_fonts.min.js') }}"></script>
     <script src="{{ asset('js/validate.js') }}"></script>
     <script src="{{ asset('js/select2.min.js') }}"></script>
+    {{-- datatable --}}
     <script>
         $(document).ready(function() {
             var table = $('#major-table').DataTable({
@@ -185,10 +195,13 @@
                         data: 'id',
                     },
                     {
+                        data: 'faculty',
+                    },
+                    {
                         data: 'name',
                     },
                     {
-                        data: 'faculty',
+                        data: 'code',
                     },
                     {
                         data: 'created_at',
@@ -209,12 +222,14 @@
                             url: "{{ route('major.show') }}/" + id,
                             success: function(response) {
                                 $('#major-name').val(response.major.name);
+                                $('#major-code').val(response.major.code);
                                 $('.major-id').val(response.major.id);
                                 $('#faculty_id').val(response.major.faculty_id);
                                 $('#faculty_id').trigger('change');
                             },
                             error: function(response) {
                                 $('#major-name').val('');
+                                $('#major-code').val();
                                 $('.major-id').val('');
                                 $.toast({
                                     heading: 'Thông báo',
@@ -232,7 +247,7 @@
             });
         });
     </script>
-
+    {{-- dom button datatable --}}
     <script>
         $(document).ready(function() {
             let button = $("#major-table_wrapper > .dt-buttons");
@@ -248,7 +263,7 @@
             });
         });
     </script>
-
+    {{-- validate --}}
     <script>
         $(document).ready(function() {
             let validator = $('.form-modal')
@@ -263,6 +278,15 @@
             $('.faculty_id').select2({
                 placeholder: "Chọn khoa",
             });
+        });
+    </script>
+
+    <script>
+        let name = $('#name');
+        let code = $('#code');
+
+        name.blur(function(e) {
+            code.val(name.val().split(' ').map(x => x[0]).join('').toUpperCase())
         });
     </script>
     @if (session('success'))

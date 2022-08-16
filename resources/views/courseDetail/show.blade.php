@@ -1,56 +1,86 @@
 @extends('layouts.master')
 @section('content')
     @push('css')
-        <link href="{{ asset('css/fullcalendar.min.css') }}" rel="stylesheet" type="text/css">
+        <link href="{{ asset('css/jquery-ui.min.css') }}" rel="stylesheet" type="text/css">
+        <link href="{{ asset('css/jquery-ui.structure.min.css') }}" rel="stylesheet" type="text/css">
+        <link href="{{ asset('css/jquery-ui.theme.min.css') }}" rel="stylesheet" type="text/css">
     @endpush
     <div class="col-12">
-        <form method="post" action="{{ route('courseDetail.store') }}" novalidate id="form-create">
-            @csrf
-            <div class="form-group mb-3">
-                <label for="course">Mã học phần</label>
-                <select name="course_id" id="course" class="form-control" required>
-                    <option></option>
-                    @foreach ($courses as $course)
-                        <option value="{{ $course->id }}">{{ $course->course_code }}</option>
-                    @endforeach
-                </select>
+        @foreach ($courseDetails as $courseDetail)
+            <div class="form-group mb-3 text-center d-flex">
+                <div class="flex-fill form-group">
+                    <label for="">1</label>
+                    <input type="text" class="form-control">
+                </div>
+                <div class="flex-fill form-group">
+                    <label for="">1</label>
+                    <input type="text" class="form-control">
+                </div>
+                <div class="flex-fill form-group">
+                    <label for="">1</label>
+                    <input type="text" class="form-control">
+                </div>
             </div>
-            <div class="form-group d-none" id="course_detail">
-                <div class="form-group mb-3">
-                    <label>Tên môn học</label>
-                    <input type="text" name="" id="subject_name" readonly class="form-control">
+            <div class="form-group d-flex align-items-end">
+                <div style="max-width:80px;width:100%;">
+                    <script>
+                        // Khai báo đối tượng Date
+                        // console.log();
+                        var date = new Date('{{ $courseDetail->date }}');
+                        var current_day = date.getDay();
+                        // Biến lưu tên của thứ
+                        var day_name = '';
+
+                        switch (current_day) {
+                            case 0:
+                                day_name = "Chủ nhật";
+                                break;
+                            case 1:
+                                day_name = "Thứ hai";
+                                break;
+                            case 2:
+                                day_name = "Thứ ba";
+                                break;
+                            case 3:
+                                day_name = "Thứ tư";
+                                break;
+                            case 4:
+                                day_name = "Thứ năm";
+                                break;
+                            case 5:
+                                day_name = "Thứ sáu";
+                                break;
+                            case 6:
+                                day_name = "Thứ bảy";
+                        }
+
+                        document.write(day_name);
+                    </script>
                 </div>
-                <div class="form-group mb-3">
-                    <label>Tên giáo viên </label>
-                    <input type="text" name="" id="teacher_name" readonly class="form-control">
-                    <input type="hidden" name="teacher_id" id="teacher_id" readonly class="form-control">
+                <input type="text" class="date form-control"
+                    value="{{ Carbon\Carbon::parse($courseDetail->date)->format('d/m/Y') }}">
+                <div class="">
+                    <input type="text" value="{{ $courseDetail->lesson_start }}" class="form-control">
                 </div>
-                <div class="form-group mb-3">
-                    <label>Số buổi học/tuần</label>
-                    <input type="text" name="" id="weekday" readonly class="form-control">
+                <div>
+                    <input type="text" value="{{ $courseDetail->lesson_total }}" class="form-control">
+
                 </div>
-                <div class="form-group mb-3">
-                    <div class="form-check">
-                        <input type="radio" name="timetable" id="day" value="1" required>
-                        <label for="day">Xếp lịch theo ngày</label>
-                    </div>
-                    <div class="form-check">
-                        <input type="radio" name="timetable" id="courseDetailFull">
-                        <label for="courseDetailFull">Xếp lịch toàn học phần</label>
-                    </div>
-                </div>
-                <div id="divCreate">
-                </div>
-                <button class="btn btn-primary" type="submit">Thêm</button>
             </div>
-        </form>
+        @endforeach
     </div>
 @endsection
 
 @push('js')
     <script src="{{ asset('js/select2.min.js') }}"></script>
     <script src="{{ asset('js/fullcalendar.min.js') }}"></script>
+    <script src="{{ asset('js/datetime-picker.js') }}"></script>
     {{-- <script src="{{ asset('js/validate.js') }}"></script> --}}
+    <script>
+        $(function() {
+            $('.date').datepicker();
+        });
+    </script>
     <script>
         $(document).ready(function() {
             let course = $('#course')

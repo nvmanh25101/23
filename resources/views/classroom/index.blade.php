@@ -49,18 +49,37 @@
                         <form action="{{ route('classroom.store') }}" class="pl-3 pr-3" method="post" novalidate>
                             @csrf
                             <div class="form-group">
-                                <label for="name">Tên lớp học</label>
-                                <input class="form-control" type="text" id="name" name="name" required>
+                                <label for="name">Hệ đào tạo</label>
+                                <select name="training_id" id="" class="form-control">
+                                    @foreach ($trainings as $training)
+                                        <option value="{{ $training->id }}">{{ $training->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="yaer">Khóa</label>
+                                <select name="academic_year_id " id="year" class="form-control">
+                                    <option value="{{ $academicYear->id }}" data-code="K{{ $academicYear->id }}">
+                                        {{ $academicYear->name }}
+                                        (K{{ $academicYear->id }})
+                                    </option>
+                                </select>
                             </div>
                             <div class="form-group">
                                 <label for="major">Chọn ngành</label>
                                 <select class="form-control major_id" id="major" name="major_id" required>
                                     <option></option>
                                     @foreach ($majors as $major)
-                                        <option value="{{ $major->id }}">{{ $major->name }}
+                                        <option value="{{ $major->id }}" data-code="{{ $major->code }}">
+                                            {{ $major->name }}
                                         </option>
                                     @endforeach
                                 </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="name">Tên lớp học</label>
+                                <input class="form-control" type="text" id="name" name="name" required>
                             </div>
                             <div class="form-group text-center ">
                                 <button class="btn btn-primary w-100" type="submit">Thêm mới</button>
@@ -85,7 +104,6 @@
                             <div class="form-group">
                                 <label for="major_id">Chọn ngành</label>
                                 <select class="form-control major_id" name="major_id" id="major_id" required>
-                                    <option></option>
                                     @foreach ($majors as $major)
                                         <option value="{{ $major->id }}" data-id="{{ $major->id }}">
                                             {{ $major->name }}
@@ -263,6 +281,24 @@
             });
         });
     </script>
+
+    <script>
+        let major_select = $('#major');
+        let name = $('#name');
+        let year = $('#year');
+        major_select.on('select2:select', function(e) {
+            let id = major_select.find(':selected').val();
+            $.ajax({
+                type: "get",
+                url: "{{ route('countClassRoom') }}/" + id,
+                success: function(response) {
+                    name.val(year.find(':selected').data('code') + major_select.find(':selected').data(
+                        'code') + "-" + (response - 0 + 1));
+                }
+            });
+        });
+    </script>
+
     @if (session('success'))
         <script>
             $.toast({

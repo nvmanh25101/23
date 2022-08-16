@@ -106,7 +106,6 @@ class MajorController extends Controller
         $major->save();
         return redirect()->back()->with('success', 'Sửa thành công');
     }
-
     /**
      * Remove the specified resource from storage.
      *

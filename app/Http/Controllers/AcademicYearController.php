@@ -6,6 +6,7 @@ use App\Models\AcademicYear;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Yajra\Datatables\Datatables;
+use Carbon\Carbon;
 
 class AcademicYearController extends Controller
 {
@@ -25,23 +26,15 @@ class AcademicYearController extends Controller
      */
     public function index()
     {
-        return view("academicYear.index");
+        $academicYear = AcademicYear::query()->max('id');
+        return view("academicYear.index", compact('academicYear'));
     }
 
     public function api()
     {
         return Datatables::of(AcademicYear::query())
-            ->addColumn('action', function ($id) {
-                return "<button type='button' class='btn action-icon' data-toggle='modal' data-target='#update-academicYear' data-id='$id->id'>
-                <i class='mdi mdi-pencil'></i>
-                </button>
-                <button type='button' class='btn action-icon' data-toggle='modal' data-target='#confirm-delete' data-id='$id->id'>
-                <i class='mdi mdi-delete'></i>
-                </button>";
-            })
-            ->addColumn('academicYear', function ($academicYear) {
-                $year_end = $academicYear->year_start + $academicYear->year_total;
-                return $academicYear->year_start . '-' . $year_end;
+            ->editColumn('id', function ($academicYear) {
+                return "K" . $academicYear->id;
             })
             ->make(true);
     }
@@ -57,9 +50,9 @@ class AcademicYearController extends Controller
 
     public function store(Request $request)
     {
-        $academicYear = new AcademicYear();
-        $academicYear->fill($request->all());
-        $academicYear->save();
+        AcademicYear::create([
+            'name' => "",
+        ]);
         return back()->with('success', 'Thêm thành công');
     }
 

@@ -7,10 +7,13 @@ use App\Http\Controllers\CourseController;
 use App\Http\Controllers\CourseDetailController;
 use App\Http\Controllers\FacultyController;
 use App\Http\Controllers\MajorController;
+use App\Http\Controllers\PlanController;
+use App\Http\Controllers\SemesterController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\TestController;
+use App\Http\Controllers\TrainingController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -36,6 +39,10 @@ Route::get('/login', function () {
 Route::get('/load-subject/{faculty_id?}', [AjaxController::class, 'loadSubject'])->name('loadSubject');
 
 Route::get('/load-teacher/{faculty_id?}', [AjaxController::class, 'loadTeacher'])->name('loadTeacher');
+
+Route::get('/countClassRoom/{major_id?}', [AjaxController::class, 'countClassRoom'])->name('countClassRoom');
+
+Route::get('/getSemester/{training_id?}', [AjaxController::class, 'getSemester'])->name('getSemester');
 
 Route::prefix('faculty')->name('faculty.')->group(function () {
     Route::get('/', [FacultyController::class, 'index'])->name('index');
@@ -156,6 +163,8 @@ Route::prefix('course')->name('course.')->group(function () {
     Route::get('/', [CourseController::class, 'index'])->name('index');
     Route::get('/api', [CourseController::class, 'api'])->name('api');
     Route::get('/show/{id?}', [CourseController::class, 'show'])->name('show');
+
+
     Route::get('/add', [CourseController::class, 'create'])->name('add');
     Route::post('/add', [CourseController::class, 'store'])->name('store');
 
@@ -177,4 +186,84 @@ Route::prefix('course-detail')->name('courseDetail.')->group(function () {
     Route::post('/edit', [CourseDetailController::class, 'update'])->name('update');
 
     Route::delete('/delete', [CourseDetailController::class, 'destroy'])->name('destroy');
+});
+
+
+Route::prefix('semester')->name('semester.')->group(function () {
+    Route::get('/', [SemesterController::class, 'index'])->name('index');
+    Route::get('/api', [SemesterController::class, 'api'])->name('api');
+    Route::get('/show/{id?}', [SemesterController::class, 'show'])->name('show');
+    // 
+    Route::get('/add', function () {
+        return abort(404);
+    });
+    Route::post('/add', [SemesterController::class, 'store'])->name('store');
+    // 
+    Route::get('/edit', function () {
+        return abort(404);
+    });
+    Route::post('/edit', [SemesterController::class, 'update'])->name('update');
+    // 
+    Route::get('/delete', function () {
+        return abort(404);
+    });
+    Route::delete('/delete', [SemesterController::class, 'destroy'])->name('destroy');
+});
+
+
+Route::prefix('he-dao-tao')->name('training.')->group(function () {
+    Route::get('/danh-sach', [TrainingController::class, 'index'])->name('index');
+    Route::get('/api', [TrainingController::class, 'api'])->name('api');
+    Route::get('/show/{id?}', [TrainingController::class, 'show'])->name('show');
+    // 
+    Route::get('/them-moi', function () {
+        return abort(404);
+    });
+    Route::post('/them-moi', [TrainingController::class, 'store'])->name('store');
+    // 
+    Route::get('/chinh-sua', function () {
+        return abort(404);
+    });
+    Route::post('/chinh-sua', [TrainingController::class, 'update'])->name('update');
+    // 
+    Route::get('/xoa', function () {
+        return abort(404);
+    });
+    // Route::delete('/xoa', [TrainingController::class, 'destroy'])->name('destroy');
+});
+
+Route::prefix('he-dao-tao')->name('training.')->group(function () {
+    Route::get('/danh-sach', [TrainingController::class, 'index'])->name('index');
+    Route::get('/api', [TrainingController::class, 'api'])->name('api');
+    Route::get('/show/{id?}', [TrainingController::class, 'show'])->name('show');
+    // 
+    Route::get('/them-moi', function () {
+        return abort(404);
+    });
+    Route::post('/them-moi', [TrainingController::class, 'store'])->name('store');
+    // 
+    Route::get('/chinh-sua', function () {
+        return abort(404);
+    });
+    Route::post('/chinh-sua', [TrainingController::class, 'update'])->name('update');
+    // 
+    Route::get('/xoa', function () {
+        return abort(404);
+    });
+    // Route::delete('/xoa', [TrainingController::class, 'destroy'])->name('destroy');
+});
+
+Route::prefix('chuong-trinh-khung')->name('plan.')->group(function () {
+    Route::get('/', [PlanController::class, 'index'])->name('index');
+    Route::get('/api', [PlanController::class, 'api'])->name('api');
+    Route::get('/show/{id?}', [PlanController::class, 'show'])->name('show');
+
+
+    Route::get('/them-moi', [PlanController::class, 'create'])->name('add');
+    Route::post('/them-moi', [PlanController::class, 'store'])->name('store');
+
+    Route::get('/chinh-sua/{plan}', [PlanController::class, 'edit'])->name('edit');
+    Route::post('/chinh-sua/{plan}', [PlanController::class, 'update'])->name('update');
+
+    Route::delete('/delete', [PlanController::class, 'destroy'])->name('destroy');
 });

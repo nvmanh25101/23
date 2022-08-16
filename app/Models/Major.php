@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Major extends Model
 {
     use HasFactory;
-    protected $fillable = ['name', 'faculty_id'];
+    protected $fillable = ['name', 'faculty_id', 'code'];
 
     public function classrooms()
     {

@@ -50,6 +50,9 @@ class CourseController extends Controller
             ->editColumn('teacher_id', function ($course) {
                 return $course->teacher->name;
             })
+            ->addColumn('view', function ($object) {
+                return route('courseDetail.show', $object);
+            })
             ->make(true);
     }
     /**
@@ -78,9 +81,8 @@ class CourseController extends Controller
         $str = $course->subject->name;
         $ret = '';
         foreach (explode(' ', $str) as $word) {
-
             $ret .= strtoupper($word[0]);
-            $course_code = $request->id . "-" . $ret;
+            $course_code = $currentId . "-" . $ret;
         }
         $course->course_code = $course_code;
         $course->save();
@@ -104,8 +106,10 @@ class CourseController extends Controller
         }
         return response()->json([
             'status' => 200,
+            'id' => $course->id,
             'subject' => $course->subject->name,
-            'teacher' => $course->teacher->name,
+            'teacher_id' => $course->subject->id,
+            'teacher_name' => $course->teacher->name,
             'weekday' => $course->weekday,
         ]);
     }

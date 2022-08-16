@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\CourseDetailStatus;
 use App\Enums\CourseDetailType;
+use App\Http\Requests\CourseDetail\StoreRequest;
 use App\Models\Course;
 use App\Models\CourseDetail;
 use App\Models\Faculty;
@@ -47,7 +48,7 @@ class CourseDetailController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreRequest $request)
     {
         $arrLessonInWeek = [];
         $arrLessonInCourse = [];
@@ -59,6 +60,7 @@ class CourseDetailController extends Controller
             $totalLessonInWeek += (int)$request->lesson_total[$i];
             // thời gian từng buổi học
             $arrLessonInWeek[$i]['course_id'] = (int)$request->course_id;
+            $arrLessonInWeek[$i]['teacher_id'] = (int)$request->teacher_id;
             $arrLessonInWeek[$i]['type'] = CourseDetailType::LICH_HOC;
             $arrLessonInWeek[$i]['status'] = CourseDetailStatus::MAC_DINH;
             $arrLessonInWeek[$i]['date'] = $request->date[$i];
@@ -93,6 +95,7 @@ class CourseDetailController extends Controller
             }
         }
         $arrLessonInCourse = array_filter($arrLessonInCourse);
+        // dd($arrLessonInCourse);
         foreach ($arrLessonInCourse as $perWeek) {
             CourseDetail::insert($perWeek);
         }
@@ -104,9 +107,11 @@ class CourseDetailController extends Controller
      * @param  \App\Models\CourseDetail  $courseDetail
      * @return \Illuminate\Http\Response
      */
-    public function show(CourseDetail $courseDetail)
+    public function show($id)
     {
-        //
+        $courseDetails = CourseDetail::where('course_id', $id)->get();
+        // dd($courseDetail);
+        return view('courseDetail.show', compact('courseDetails'));
     }
 
     /**

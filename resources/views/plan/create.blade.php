@@ -1,0 +1,151 @@
+@extends('layouts.master')
+@section('content')
+    <div class="col-12">
+        <form method="post" action="{{ route('course.store') }}" class="needs-validation" novalidate>
+            @csrf
+            <div class="form-group mb-3">
+                <label>Chọn lớp</label>
+                <select class="form-control" id="classroom_select" name="">
+                    <option></option>
+                    @foreach ($classRooms as $classRoom)
+                        <option value="{{ $classRoom->id }}" data-training="{{ $classRoom->training_id }}">
+                            {{ $classRoom->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="semester-wrap accordion custom-accordion" id="custom-accordion-one">
+            </div>
+            <input type="hidden" id="e10_2" style="width:300px" />
+
+            <button class="btn btn-primary" type="submit">Thêm</button>
+        </form>
+    </div>
+@endsection
+
+@push('js')
+    <script src="{{ asset('js/select2.min.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+            let faculty_select = $('#faculty_id');
+            let subject_select = $('#subject_id');
+            let teacher_select = $('#teacher_id');
+            faculty_select.select2({
+                placeholder: "Chọn khoa",
+            });
+            faculty_select.change(function(e) {
+                let urlLoadSubject = "{{ route('loadSubject') }}/" + $(this).val()
+                let urlLoadTeacher = "{{ route('loadTeacher') }}/" + $(this).val()
+                $.ajax({
+                    type: "GET",
+                    url: urlLoadSubject,
+                    success: function(response) {
+                        subject_select.html('')
+                        for (let i = 0; i < response.length; i++) {
+                            subject_select.append('<option></option>')
+                            subject_select.append('<option value="' + response[i].id + '">' +
+                                response[
+                                    i].name +
+                                '</option>');
+                        }
+                        $('#subject').removeClass('d-none');
+                    }
+                });
+                $.ajax({
+                    type: "GET",
+                    url: urlLoadTeacher,
+                    success: function(response) {
+                        teacher_select.html('')
+                        for (let i = 0; i < response.length; i++) {
+                            teacher_select.append('<option></option>')
+                            teacher_select.append('<option value="' + response[i].id + '">' +
+                                response[
+                                    i].name +
+                                '</option>');
+                        }
+                    }
+                });
+            });
+            subject_select.select2({
+                placeholder: "Chọn môn",
+            });
+            teacher_select.select2({
+                placeholder: "Chọn giáo viên",
+            });
+        });
+    </script>
+    <script>
+        let classroom_select = $('#classroom_select');
+        classroom_select.select2({
+            placeholder: "Chọn lớp",
+        })
+        classroom_select.on('select2:select', function(e) {
+            let training_id = classroom_select.find(':selected').data('training');
+            let semester_wrap = $('.semester-wrap');
+            $.ajax({
+                type: "get",
+                url: "{{ route('getSemester') }}/" + training_id,
+                success: function(response) {
+
+                    let semester = (response.semester.year) * 2;
+                    semester_wrap.empty();
+                    for (let i = 1; i <= semester; i++) {
+                        semester_wrap.append(
+                            `
+                            <div class="card mb-0">
+                                <div class="card-header" id="heading${i}">
+                                    <h5 class="m-0">
+                                        <a class="custom-accordion-title d-block py-1"
+                                            data-toggle="collapse" href="#collapse${i}"
+                                            aria-expanded="false" aria-controls="collapse${i}">
+                                            Học kỳ ${i}
+                                        </a>
+                                    </h5>
+                                </div>
+                                <div id="collapse${i}" class="collapse show"
+                                    aria-labelledby="heading${i}"
+                                    data-parent="#custom-accordion-one">
+                                    <div class="card-body btn btn-danger p-1 m-1 btn-add-subject" id="btn-add-${i}" data-value="${i}">
+                                    Thêm môn học 
+                                        <i class="mdi mdi-plus-thick"></i>
+                                    </div>
+                                    <div class="add-subject p-1 m-1">
+                                    </div>
+                                </div>
+                            </div>
+                            `)
+
+                    }
+                    let btn_add_subject = $('.btn-add-subject')
+                    btn_add_subject.click(function(e) {
+                        let subject_div = $(this).parent().children().last()
+                        var subjects = @json($subjects);
+                        let subject_select =
+                            "<div class='m-1'><select class='subject-select'>";
+                        subjects.forEach((element, index) => {
+                            subject_select +=
+                                `<option value="${$(this).data('value')}-${index}">${element.name}</option>`
+                        });
+                        subject_select += "</select></div>"
+                        subject_div.append(subject_select);
+                        console.log(subject_select);
+                        $('.subject-select').select2({})
+                    });
+                }
+            });
+        });
+    </script>
+
+    @if (session('success'))
+        <script>
+            $.toast({
+                heading: 'Thông báo',
+                text: '{{ session('success') }}',
+                icon: 'success',
+                loader: true,
+                loaderBg: 'rgba(0,0,0,0.2)',
+                position: 'top-right',
+                showHideTransition: 'slide',
+            })
+        </script>
+    @endif
+@endpush
