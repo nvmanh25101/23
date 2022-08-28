@@ -1,11 +1,11 @@
 @extends('layouts.master')
 @section('content')
     <div class="col-12">
-        <form method="post" action="{{ route('course.store') }}" class="needs-validation" novalidate>
+        <form method="post" action="{{ route('plan.store') }}" class="needs-validation" novalidate>
             @csrf
             <div class="form-group mb-3">
                 <label>Chọn lớp</label>
-                <select class="form-control" id="classroom_select" name="">
+                <select class="form-control" id="classroom_select" name="classroom_id">
                     <option></option>
                     @foreach ($classRooms as $classRoom)
                         <option value="{{ $classRoom->id }}" data-training="{{ $classRoom->training_id }}">
@@ -15,8 +15,6 @@
             </div>
             <div class="semester-wrap accordion custom-accordion" id="custom-accordion-one">
             </div>
-            <input type="hidden" id="e10_2" style="width:300px" />
-
             <button class="btn btn-primary" type="submit">Thêm</button>
         </form>
     </div>
@@ -85,7 +83,6 @@
                 type: "get",
                 url: "{{ route('getSemester') }}/" + training_id,
                 success: function(response) {
-
                     let semester = (response.semester.year) * 2;
                     semester_wrap.empty();
                     for (let i = 1; i <= semester; i++) {
@@ -115,23 +112,38 @@
                             `)
 
                     }
-                    let btn_add_subject = $('.btn-add-subject')
-                    btn_add_subject.click(function(e) {
-                        let subject_div = $(this).parent().children().last()
-                        var subjects = @json($subjects);
-                        let subject_select =
-                            "<div class='m-1'><select class='subject-select'>";
-                        subjects.forEach((element, index) => {
-                            subject_select +=
-                                `<option value="${$(this).data('value')}-${index}">${element.name}</option>`
-                        });
-                        subject_select += "</select></div>"
-                        subject_div.append(subject_select);
-                        console.log(subject_select);
-                        $('.subject-select').select2({})
+                    $.ajax({
+                        type: "get",
+                        url: "{{ route('loadSubjectFromClassRoom') }}/" +
+                            classroom_select.val(),
+                        dataType: "json",
+                        success: function(response) {
+                            var subjects = response;
+                            let btn_add_subject = $('.btn-add-subject')
+                            btn_add_subject.click(function(e) {
+                                let subject_div = $(this).parent().children().last()
+                                let semester_select = $(this).data('value');
+                                let subject_select =
+                                    "<div class='m-1 d-flex align-items-center'><select class='subject-select' name='subject_id[]'>";
+                                subjects.forEach((element, index) => {
+                                    subject_select +=
+                                        `<option value="${semester_select}-${element.id}">${element.name}</option>`
+                                });
+                                subject_select += "</select>"
+                                subject_select +=
+                                    "<i class='mdi mdi-close p-1 btn btn-danger ml-2 btn-delete-subject'></i>"
+                                subject_select += "</div>"
+                                console.log(subject_select);
+                                subject_div.append(subject_select);
+                                $('.subject-select').select2({})
+                            });
+                        }
                     });
                 }
             });
+        });
+        $(document).on('click', '.btn-delete-subject', function(e) {
+            $(this).parent().remove();
         });
     </script>
 

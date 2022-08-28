@@ -15,7 +15,10 @@ class CreatePlansTable extends Migration
     {
         Schema::create('plans', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->integer('semester');
+            $table->foreignId('subject_id')->constrained('subjects');
+            $table->foreignId('classroom_id')->constrained('classrooms');
+            // $table->unique('semester,subject_id');
         });
     }
 
