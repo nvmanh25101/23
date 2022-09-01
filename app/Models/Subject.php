@@ -23,4 +23,8 @@ class Subject extends Model
     {
         return $this->hasMany(Course::class);
     }
+    // public function classrooms()
+    // {
+    //     return $this->belongsToMany(Classroom::class);
+    // }
 }

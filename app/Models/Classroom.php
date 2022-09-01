@@ -14,4 +14,17 @@ class Classroom extends Model
     {
         return $this->belongsTo(Major::class);
     }
+    public function plans()
+    {
+        return $this->hasMany(Plan::class);
+    }
+
+    public function assignments()
+    {
+        return $this->hasMany(Assignment::class);
+    }
+    // public function subjects()
+    // {
+    //     return $this->belongsToMany(Subject::class);
+    // }
 }

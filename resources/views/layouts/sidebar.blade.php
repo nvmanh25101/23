@@ -198,6 +198,13 @@
             </li>
 
             <li class="side-nav-item">
+                <a href="{{ route('assignment.index') }}" class="side-nav-link">
+                    <i class="uil-home-alt"></i>
+                    <span> Phân công giảng dạy</span>
+                </a>
+            </li>
+
+            <li class="side-nav-item">
                 <a href="{{ route('course.index') }}" class="side-nav-link">
                     <i class="uil-home-alt"></i>
                     <span> Học phần </span>

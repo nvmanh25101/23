@@ -6,11 +6,11 @@
 
 @section('content')
     <div class="col-12">
-        <div id="courses-datatable_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+        <div id="plans-datatable_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
             <div class="row mb-2">
                 <div class="col-sm-4">
                     <a href="{{ route('plan.add') }}" class="btn btn-danger mb-2"><i class="mdi mdi-plus-circle mr-2"></i>
-                        Thêm chương trình khung
+                        Thêm chương trình đào tạo
                     </a>
                 </div>
                 <div class="col-sm-8">
@@ -26,16 +26,12 @@
             </div>
             <div class="row">
                 <div class="col-sm-12">
-                    <table class="table dt-responsive nowrap" id="course-table">
+                    <table class="table dt-responsive nowrap" id="plan-table">
                         <thead>
                             <tr role="row">
                                 <th>#ID</th>
-                                <th>Mã học phần</th>
-                                <th>Tên môn học</th>
-                                <th>Tên giáo viên</th>
-                                <th>Số tín chỉ</th>
-                                <th>Số buổi học/tuần</th>
-                                <th>Lịch học</th>
+                                <th>Tên lớp học</th>
+                                <th>Tên ngành học</th>
                                 <th>Quản trị</th>
                             </tr>
                         </thead>
@@ -58,10 +54,10 @@
                         Bạn chắc chắn với điều này?
                     </div>
                     <div class="modal-footer">
-                        <form action="{{ route('course.destroy') }}" method="post">
+                        <form action="{{ route('plan.destroy') }}" method="post">
                             @csrf
                             @method('DELETE')
-                            <input type="hidden" name="id" class="course-id">
+                            <input type="hidden" name="id" class="plan-id">
                             <button type="submit" class="btn btn-danger" id="confirm-delete-button">Xóa</button>
                             <button type="button" class="btn btn-light" data-dismiss="modal">Hủy</button>
                         </form>
@@ -79,11 +75,11 @@
     <script src="{{ asset('js/select2.min.js') }}"></script>
     <script>
         $(document).ready(function() {
-            var table = $('#course-table').DataTable({
+            var table = $('#plan-table').DataTable({
                 processing: true,
                 serverSide: true,
                 select: true,
-                ajax: "{{ route('course.api') }}",
+                ajax: "{{ route('plan.api') }}",
                 dom: "B<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>tipr",
                 buttons: [{
                         extend: 'copyHtml5',
@@ -124,33 +120,13 @@
                     targets: [-1],
                 }],
                 columns: [{
-                        data: 'id',
+                        data: 'classroom_id',
                     },
                     {
-                        data: 'course_code',
+                        data: 'classroom',
                     },
                     {
-                        data: 'subject_id',
-                    },
-
-                    {
-                        data: 'teacher_id',
-                    },
-                    {
-                        data: 'subject.credit',
-                    },
-                    {
-                        data: 'weekday',
-                    },
-                    {
-                        data: 'view',
-                        orderable: false,
-                        searchable: false,
-                        render: function(data, type, row, meta) {
-                            return `
-                            <a href="${data}">Chi tiết</a>
-                            `;
-                        }
+                        data: 'major',
                     },
                     {
                         data: 'action',
@@ -165,12 +141,12 @@
                         let id = $(this).attr('data-id');
                         $.ajax({
                             type: "GET",
-                            url: "{{ route('course.show') }}/" + id,
+                            url: "{{ route('plan.show') }}/" + id,
                             success: function(response) {
-                                $('.course-id').val(response.id);
+                                $('.plan-id').val(response.id);
                             },
                             error: function(response) {
-                                $('.course-id').val('');
+                                $('.plan-id').val('');
                                 $.toast({
                                     heading: 'Thông báo',
                                     text: 'Có lỗi xảy ra',
@@ -190,7 +166,7 @@
 
     <script>
         $(document).ready(function() {
-            let button = $("#course-table_wrapper > .dt-buttons");
+            let button = $("#plan-table_wrapper > .dt-buttons");
             $('.buttons-colvis').addClass('btn-success');
             $('.buttons-colvis').append('<i class="mdi mdi-settings"></i>');
             $('.buttons-colvis').parent().appendTo('#fillter');
