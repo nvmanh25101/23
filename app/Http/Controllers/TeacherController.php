@@ -128,10 +128,9 @@ class TeacherController extends Controller
     {
         Teacher::destroy($teacherId);
 
-        $arr = [];
-        $arr['status'] = true;
-        $arr['message'] = 'Xóa thành công';
-        return response($arr, 200);
+        return response()->json([
+            'success' => 'Xóa thành công',
+        ]);
     }
 
     public function importCsv(Request $request)
