@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AcademicYear;
 use App\Models\Classroom;
 use App\Models\Major;
+use App\Models\Training;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Yajra\Datatables\Datatables;
@@ -25,8 +27,10 @@ class ClassroomController extends Controller
     }
     public function index()
     {
+        $academicYear = AcademicYear::orderBy('id', 'desc')->first();
+        $trainings = Training::all();
         $majors = Major::all();
-        return view('classroom.index', compact('majors'));
+        return view('classroom.index', compact('majors', 'academicYear', 'trainings'));
     }
 
 

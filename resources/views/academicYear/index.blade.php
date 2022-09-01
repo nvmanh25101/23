@@ -29,9 +29,7 @@
                         <thead>
                             <tr role="row">
                                 <th>#ID</th>
-                                <th>Niên khóa</th>
-                                <th>Số năm đào tạo</th>
-                                <th>Quản trị</th>
+                                <th>Tên khóa</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -47,14 +45,9 @@
                         <form action="{{ route('academicYear.store') }}" class="pl-3 pr-3" method="post" novalidate>
                             @csrf
                             <div class="form-group">
-                                <label for="start">Năm niên khóa</label>
-                                <input class="form-control" type="text" id="start" name="year_start" required
-                                    pattern="[0-9]+" title="Only number.">
-                            </div>
-                            <div class="form-group">
-                                <label for="total">Tổng số năm đào tạo</label>
-                                <input class="form-control" type="text" id="total" name="year_total" required
-                                    pattern="[0-9]+" title="Only number.">
+                                <label for="name">Tên khóa</label>
+                                <input type="text" id="" class="form-control" readonly
+                                    value="Khóa {{ $academicYear + 1 }}">
                             </div>
                             <div class="form-group text-center ">
                                 <button class="btn btn-primary w-100" type="submit">Thêm mới</button>
@@ -64,7 +57,7 @@
                 </div>
             </div>
         </div>
-        <div id="update-academicYear" class="modal fade form-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        {{-- <div id="update-academicYear" class="modal fade form-modal" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-body">
@@ -72,7 +65,7 @@
                             @csrf
                             <input type="hidden" name="id" class="academicYear-id">
                             <div class="form-group">
-                                <label for="year_start">Năm niên khóa</label>
+                                <label for="year_start">Năm nhập học</label>
                                 <input class="form-control" type="text" id="year_start" name="year_start" required
                                     pattern="[0-9]+" title="Only number.">
                             </div>
@@ -111,7 +104,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
     </div>
 @endsection
 
@@ -172,14 +165,11 @@
 
                     },
                     {
-                        data: 'academicYear',
+                        data: 'name',
                     },
-                    {
-                        data: 'year_total',
-                    },
-                    {
-                        data: 'action',
-                    },
+                    // {
+                    //     data: 'action',
+                    // },
                 ],
                 order: [
                     [0, 'desc']

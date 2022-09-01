@@ -9,8 +9,8 @@
         <div id="courses-datatable_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
             <div class="row mb-2">
                 <div class="col-sm-4">
-                    <a href="{{ route('course.add') }}" class="btn btn-danger mb-2"><i
-                            class="mdi mdi-plus-circle mr-2"></i> Thêm học phần mới
+                    <a href="{{ route('course.add') }}" class="btn btn-danger mb-2"><i class="mdi mdi-plus-circle mr-2"></i>
+                        Thêm học phần mới
                     </a>
                 </div>
                 <div class="col-sm-8">
@@ -35,6 +35,7 @@
                                 <th>Tên giáo viên</th>
                                 <th>Số tín chỉ</th>
                                 <th>Số buổi học/tuần</th>
+                                <th>Lịch học</th>
                                 <th>Quản trị</th>
                             </tr>
                         </thead>
@@ -70,7 +71,6 @@
         </div>
     </div>
 @endsection
-
 @push('js')
     <script src="{{ asset('js/datatables.min.js') }}"></script>
     <script src="{{ asset('js/pdfmake.min.js') }}"></script>
@@ -143,6 +143,16 @@
                         data: 'weekday',
                     },
                     {
+                        data: 'view',
+                        orderable: false,
+                        searchable: false,
+                        render: function(data, type, row, meta) {
+                            return `
+                            <a href="${data}">Chi tiết</a>
+                            `;
+                        }
+                    },
+                    {
                         data: 'action',
                     },
                 ],
@@ -157,11 +167,9 @@
                             type: "GET",
                             url: "{{ route('course.show') }}/" + id,
                             success: function(response) {
-                                $('#course-name').val(response.course.name);
-                                $('.course-id').val(response.course.id);
+                                $('.course-id').val(response.id);
                             },
                             error: function(response) {
-                                $('#course-name').val('');
                                 $('.course-id').val('');
                                 $.toast({
                                     heading: 'Thông báo',
