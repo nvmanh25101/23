@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\TeacherLevelEnum;
 use App\Models\Teacher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -19,12 +20,15 @@ class AuthController extends Controller
         $user = [
             'email' => $request->get('email'),
             'password' => $request->get('password'),
-            'level' => 1,
         ];
 
         if (Auth::attempt($user)) {
-            $request->session()->regenerate();
-            return redirect('/');
+            $auth = Auth::user()->level;
+            if ($auth === TeacherLevelEnum::GIANG_VIEN || $auth === TeacherLevelEnum::PHONG_DAO_TAO)
+            {
+                $request->session()->regenerate();
+                return redirect('/');
+            }
         }
         return redirect()->back()->with('status', 'Email hoặc Password không chính xác');
     }
