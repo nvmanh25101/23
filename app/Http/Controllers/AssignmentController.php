@@ -194,12 +194,16 @@ class AssignmentController extends Controller
 
     public function assigmentsWeekly(Request $request, $teacher_id)
     {
-        $assigments = Assignment::where('teacher_id', $teacher_id)->with('classroom:name,id', 'subject:name,id')
-            ->where('date', ">", $request->startDateOfWeek)
-            ->where('date', "<", $request->endDateOfWeek)
-            ->get();
-        // ->toSql();
-        return $assigments;
+        try {
+            $assigments = Assignment::where('teacher_id', $teacher_id)->with('classroom:name,id', 'subject:name,id')
+                ->where('date', ">", $request->startDateOfWeek)
+                ->where('date', "<", $request->endDateOfWeek)
+                ->get();
+            // ->toSql();
+            return $assigments;
+        } catch (\Throwable $th) {
+            return abort(404);
+        }
     }
 
     /**
