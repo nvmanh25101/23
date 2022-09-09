@@ -3,18 +3,14 @@
 use App\Http\Controllers\AcademicYearController;
 use App\Http\Controllers\AjaxController;
 use App\Http\Controllers\AssignmentController;
-use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ClassroomController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\CourseDetailController;
 use App\Http\Controllers\FacultyController;
 use App\Http\Controllers\MajorController;
-<<<<<<< Updated upstream
 use App\Http\Controllers\PlanController;
 use App\Http\Controllers\SemesterController;
 use App\Http\Controllers\StudentController;
-=======
->>>>>>> Stashed changes
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\TestController;
@@ -32,6 +28,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+<<<<<<< HEAD
 
 Route::get('login', [AuthController::class, 'login'])->name('login');
 Route::post('login', [AuthController::class, 'processLogin'])->name('process_login');
@@ -348,14 +345,75 @@ Route::group([
 });
 
 <<<<<<< HEAD
+=======
+Route::get('/', function () {
+    return view('layouts.master');
+})->name('home');
+
+
+Route::get('/login', function () {
+    return view('login');
+});
+
+Route::get('/load-subject/{faculty_id?}', [AjaxController::class, 'loadSubject'])->name('loadSubject');
+
+Route::get('/load-teacher/{faculty_id?}', [AjaxController::class, 'loadTeacher'])->name('loadTeacher');
+
+Route::get('/load-subject-from-classroom/{classroom?}', [AjaxController::class, 'loadSubjectFromClassRoom'])->name('loadSubjectFromClassRoom');
+
+Route::get('/countClassRoom/{major_id?}', [AjaxController::class, 'countClassRoom'])->name('countClassRoom');
+
+Route::get('/getSemester/{training_id?}', [AjaxController::class, 'getSemester'])->name('getSemester');
+
+Route::get('/chuong-trinh-khung/tim-kiem/{classroom_id?}', [AjaxController::class, 'loadPlanFromClassRoom'])->name('loadPlanFromClassRoom');
+
+Route::prefix('faculty')->name('faculty.')->group(function () {
+    Route::get('/', [FacultyController::class, 'index'])->name('index');
+    Route::get('/api', [FacultyController::class, 'api'])->name('api');
+    Route::get('/show/{id?}', [FacultyController::class, 'show'])->name('show');
+    // 
+    Route::get('/add', function () {
+        return abort(404);
+    });
+    Route::post('/add', [FacultyController::class, 'store'])->name('store');
+    // 
+    Route::get('/edit', function () {
+        return abort(404);
+    });
+    Route::post('/edit', [FacultyController::class, 'update'])->name('update');
+    // 
+    Route::get('/delete', function () {
+        return abort(404);
+    });
+    Route::delete('/delete', [FacultyController::class, 'destroy'])->name('destroy');
+});
+
+Route::group([
+    'as' => 'subjects.',
+    'prefix' => 'subjects',
+], static function () {
+    Route::get('/', [SubjectController::class, 'index'])->name('index');
+    Route::get('/api', [SubjectController::class, 'api'])->name('api');
+    Route::get('/create', [SubjectController::class, 'create'])->name('create');
+    Route::post('/store', [SubjectController::class, 'store'])->name('store');
+    Route::get('/edit/{subject}', [SubjectController::class, 'edit'])->name('edit');
+    Route::put('/edit/{subject}', [SubjectController::class, 'update'])->name('update');
+    Route::delete('/destroy/{subject}', [SubjectController::class, 'destroy'])->name('destroy');
+});
+
+>>>>>>> 9c07f47 (Revert "Merge pull request #9 from nvmanh25101/mar")
 Route::prefix('test')->name('test.')->group(function () {
     Route::get('/', [TestController::class, 'test']);
 });
 
+<<<<<<< HEAD
 =======
 <<<<<<< Updated upstream
 =======
 >>>>>>> 41105d6 (fix)
+=======
+<<<<<<< HEAD
+>>>>>>> 9c07f47 (Revert "Merge pull request #9 from nvmanh25101/mar")
 
 Route::prefix('major')->name('major.')->group(function () {
     Route::get('/', [MajorController::class, 'index'])->name('index');
@@ -378,6 +436,9 @@ Route::prefix('major')->name('major.')->group(function () {
     Route::delete('/delete', [MajorController::class, 'destroy'])->name('destroy');
 });
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 9c07f47 (Revert "Merge pull request #9 from nvmanh25101/mar")
 
 Route::prefix('academic-year')->name('academicYear.')->group(function () {
     Route::get('/', [AcademicYearController::class, 'index'])->name('index');
@@ -562,6 +623,7 @@ Route::prefix('phan-cong-giang-day')->name('assignment.')->group(function () {
     Route::post('/edit', [AssignmentController::class, 'update'])->name('update');
 
     Route::delete('/delete', [AssignmentController::class, 'destroy'])->name('destroy');
+<<<<<<< HEAD
 >>>>>>> 8656e3b (assigment fix)
 });
 
@@ -578,3 +640,8 @@ Route::prefix('sinh-vien')->name('student.')->group(function () {
 =======
 >>>>>>> Stashed changes
 >>>>>>> 41105d6 (fix)
+=======
+});
+=======
+>>>>>>> parent of 41105d6 (fix)
+>>>>>>> 9c07f47 (Revert "Merge pull request #9 from nvmanh25101/mar")
