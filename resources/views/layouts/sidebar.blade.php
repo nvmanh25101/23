@@ -77,6 +77,7 @@
             </li>
 
             <li class="side-nav-item">
+<<<<<<< Updated upstream
                 <a href="{{ route('course.index') }}" class="side-nav-link">
                     <i class="uil-home-alt"></i>
                     <span> Học phần </span>
@@ -215,6 +216,11 @@
                 <a href="{{ route('courseDetail.index') }}" class="side-nav-link">
                     <i class="uil-home-alt"></i>
                     <span> Xếp lịch học </span>
+=======
+                <a href="{{ route('major.index') }}" class="side-nav-link">
+                    <i class="uil-home-alt"></i>
+                    <span> Ngành học </span>
+>>>>>>> Stashed changes
                 </a>
             </li>
 
