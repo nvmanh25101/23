@@ -720,6 +720,7 @@ Route::prefix('phan-cong-giang-day')->name('assignment.')->group(function () {
 <<<<<<< HEAD
 >>>>>>> 8656e3b (assigment fix)
 });
+<<<<<<< HEAD
 
 
 Route::prefix('sinh-vien')->name('student.')->group(function () {
@@ -747,3 +748,5 @@ Route::prefix('sinh-vien')->name('student.')->group(function () {
 =======
 });
 >>>>>>> 366ccc6 (Revert "Merge pull request #9 from nvmanh25101/mar")
+=======
+>>>>>>> c3666bc (Revert "assigment fix")
