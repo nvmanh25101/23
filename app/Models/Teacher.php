@@ -2,16 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Auth\Authenticatable;
-use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
-class Teacher extends Model implements AuthenticatableContract
+class Teacher extends Model
 {
-    use HasFactory, Authenticatable;
+    use HasFactory;
 
     protected $fillable = [
         'name',
@@ -50,6 +48,4 @@ class Teacher extends Model implements AuthenticatableContract
     {
         return date('Y-m-d', strtotime($this->birthdate));
     }
-
-
 }
