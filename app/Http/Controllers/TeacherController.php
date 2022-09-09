@@ -6,15 +6,10 @@ use App\Enums\TeacherLevelEnum;
 use App\Enums\TeacherStatusEnum;
 use App\Http\Requests\Teacher\StoreRequest;
 use App\Http\Requests\Teacher\UpdateRequest;
-use App\Imports\TeachersImport;
 use App\Models\Faculty;
 use App\Models\Teacher;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
-use Maatwebsite\Excel\Facades\Excel;
-use Throwable;
 use Yajra\DataTables\DataTables;
 
 class TeacherController extends Controller
@@ -60,22 +55,7 @@ class TeacherController extends Controller
             ->addColumn('destroy', function ($object) {
                 return route('teachers.destroy', $object);
             })
-            ->filterColumn('level', function ($query, $keyword) {
-                if ($keyword !== '-1') {
-                    $query->where('level', $keyword);
-                }
-            })
-            ->filterColumn('status', function ($query, $keyword) {
-                if ($keyword !== '-1') {
-                    $query->where('status', $keyword);
-                }
-            })
-            ->filterColumn('faculty_name', function ($query, $keyword) {
-                $query->whereHas('faculty', function ($query) use ($keyword) {
-                    $query->where('id', $keyword);
-                });
-            })
-//            ->rawColumns(['infor', 'infor'])
+            ->rawColumns(['infor', 'infor'])
             ->make(true);
     }
 
@@ -115,7 +95,7 @@ class TeacherController extends Controller
             ]);
     }
 
-    public function update(UpdateRequest $request, $teacherId)
+    public function update(UpdateRequest $request,$teacherId)
     {
         $teacher = Teacher::query()->findOrFail($teacherId);
         $teacher->fill($request->validated());
@@ -128,22 +108,9 @@ class TeacherController extends Controller
     {
         Teacher::destroy($teacherId);
 
-        return response()->json([
-            'success' => 'Xóa thành công',
-        ]);
-    }
-
-    public function importCsv(Request $request)
-    {
-        try {
-            Excel::import(new TeachersImport(), $request->file('file'));
-            return response()->json([
-                'success' => 'Import thành công',
-            ]);
-        } catch (Throwable $e) {
-            return response()->json([
-                'error' => 'Import thất bại',
-            ], 404);
-        }
+        $arr = [];
+        $arr['status'] = true;
+        $arr['message'] = 'Xóa thành công';
+        return response($arr, 200);
     }
 }
