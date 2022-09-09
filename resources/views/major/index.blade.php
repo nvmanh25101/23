@@ -32,7 +32,10 @@
                                 <th>#ID</th>
                                 <th>Khoa</th>
                                 <th>Tên ngành</th>
+<<<<<<< Updated upstream
                                 <th>Mã ngành</th>
+=======
+>>>>>>> Stashed changes
                                 <th>Ngày thành lập</th>
                                 <th>Quản trị</th>
                             </tr>
@@ -55,10 +58,13 @@
                                 <input class="form-control" type="text" id="name" name="name" required>
                             </div>
                             <div class="form-group">
+<<<<<<< Updated upstream
                                 <label for="code">Mã ngành học</label>
                                 <input class="form-control" type="text" id="code" name="code" required>
                             </div>
                             <div class="form-group">
+=======
+>>>>>>> Stashed changes
                                 <label for="faculty">Chọn khoa</label>
                                 <select class="form-control faculty_id" id="faculty" name="faculty_id" required>
                                     <option></option>
@@ -89,10 +95,13 @@
                                 <input class="form-control" type="text" id="major-name" name="name" required>
                             </div>
                             <div class="form-group">
+<<<<<<< Updated upstream
                                 <label for="code">Mã ngành học</label>
                                 <input class="form-control" type="text" id="major-code" required readonly>
                             </div>
                             <div class="form-group">
+=======
+>>>>>>> Stashed changes
                                 <label for="faculty_id">Chọn khoa</label>
                                 <select class="form-control faculty_id" name="faculty_id" id="faculty_id" required>
                                     <option></option>
@@ -144,7 +153,10 @@
     <script src="{{ asset('js/vfs_fonts.min.js') }}"></script>
     <script src="{{ asset('js/validate.js') }}"></script>
     <script src="{{ asset('js/select2.min.js') }}"></script>
+<<<<<<< Updated upstream
     {{-- datatable --}}
+=======
+>>>>>>> Stashed changes
     <script>
         $(document).ready(function() {
             var table = $('#major-table').DataTable({
@@ -193,15 +205,23 @@
                 }],
                 columns: [{
                         data: 'id',
+<<<<<<< Updated upstream
                     },
                     {
                         data: 'faculty',
+=======
+
+>>>>>>> Stashed changes
                     },
                     {
                         data: 'name',
                     },
                     {
+<<<<<<< Updated upstream
                         data: 'code',
+=======
+                        data: 'faculty',
+>>>>>>> Stashed changes
                     },
                     {
                         data: 'created_at',
@@ -222,14 +242,20 @@
                             url: "{{ route('major.show') }}/" + id,
                             success: function(response) {
                                 $('#major-name').val(response.major.name);
+<<<<<<< Updated upstream
                                 $('#major-code').val(response.major.code);
+=======
+>>>>>>> Stashed changes
                                 $('.major-id').val(response.major.id);
                                 $('#faculty_id').val(response.major.faculty_id);
                                 $('#faculty_id').trigger('change');
                             },
                             error: function(response) {
                                 $('#major-name').val('');
+<<<<<<< Updated upstream
                                 $('#major-code').val();
+=======
+>>>>>>> Stashed changes
                                 $('.major-id').val('');
                                 $.toast({
                                     heading: 'Thông báo',
@@ -247,7 +273,11 @@
             });
         });
     </script>
+<<<<<<< Updated upstream
     {{-- dom button datatable --}}
+=======
+
+>>>>>>> Stashed changes
     <script>
         $(document).ready(function() {
             let button = $("#major-table_wrapper > .dt-buttons");
@@ -263,7 +293,11 @@
             });
         });
     </script>
+<<<<<<< Updated upstream
     {{-- validate --}}
+=======
+
+>>>>>>> Stashed changes
     <script>
         $(document).ready(function() {
             let validator = $('.form-modal')
@@ -280,6 +314,7 @@
             });
         });
     </script>
+<<<<<<< Updated upstream
 
     <script>
         let name = $('#name');
@@ -289,6 +324,8 @@
             code.val(name.val().split(' ').map(x => x[0]).join('').toUpperCase())
         });
     </script>
+=======
+>>>>>>> Stashed changes
     @if (session('success'))
         <script>
             $.toast({

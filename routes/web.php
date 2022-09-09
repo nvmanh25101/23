@@ -9,9 +9,12 @@ use App\Http\Controllers\CourseController;
 use App\Http\Controllers\CourseDetailController;
 use App\Http\Controllers\FacultyController;
 use App\Http\Controllers\MajorController;
+<<<<<<< Updated upstream
 use App\Http\Controllers\PlanController;
 use App\Http\Controllers\SemesterController;
 use App\Http\Controllers\StudentController;
+=======
+>>>>>>> Stashed changes
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\TestController;
@@ -309,3 +312,27 @@ Route::group([
     });
 });
 
+<<<<<<< Updated upstream
+=======
+
+Route::prefix('major')->name('major.')->group(function () {
+    Route::get('/', [MajorController::class, 'index'])->name('index');
+    Route::get('/api', [MajorController::class, 'api'])->name('api');
+    Route::get('/show/{id?}', [MajorController::class, 'show'])->name('show');
+    // 
+    Route::get('/add', function () {
+        return abort(404);
+    });
+    Route::post('/add', [MajorController::class, 'store'])->name('store');
+    // 
+    Route::get('/edit', function () {
+        return abort(404);
+    });
+    Route::post('/edit', [MajorController::class, 'update'])->name('update');
+    // 
+    Route::get('/delete', function () {
+        return abort(404);
+    });
+    Route::delete('/delete', [MajorController::class, 'destroy'])->name('destroy');
+});
+>>>>>>> Stashed changes
