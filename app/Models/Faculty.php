@@ -10,18 +10,12 @@ class Faculty extends Model
 {
     use HasFactory;
     protected $fillable = ['name'];
-<<<<<<< Updated upstream
 
-=======
->>>>>>> Stashed changes
     public function majors()
     {
         return $this->hasMany(Major::class);
     }
-<<<<<<< Updated upstream
 
-=======
->>>>>>> Stashed changes
     public function getCreatedAtAttribute($value)
     {
         return (date("d/m/Y", strtotime($value)));

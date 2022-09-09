@@ -41,11 +41,7 @@ class MajorController extends Controller
                 <i class='mdi mdi-delete'></i>
                 </button>";
             })
-<<<<<<< Updated upstream
             ->addColumn('faculty', function ($major) {
-=======
-            ->editColumn('faculty', function ($major) {
->>>>>>> Stashed changes
                 return $major->faculty->name;
             })
             ->make(true);
@@ -65,11 +61,7 @@ class MajorController extends Controller
         $major = new Major();
         $major->fill($request->all());
         $major->save();
-<<<<<<< Updated upstream
         return redirect()->back()->with('success', 'Thêm thành công');
-=======
-        return back()->with('success', 'Thêm thành công');
->>>>>>> Stashed changes
     }
 
     /**
@@ -112,11 +104,7 @@ class MajorController extends Controller
         $major = Major::findOrFail($request->id);
         $major->fill($request->all());
         $major->save();
-<<<<<<< Updated upstream
         return redirect()->back()->with('success', 'Sửa thành công');
-=======
-        return back()->with('success', 'Sửa thành công');
->>>>>>> Stashed changes
     }
     /**
      * Remove the specified resource from storage.
@@ -128,10 +116,6 @@ class MajorController extends Controller
     {
         $major = Major::findOrFail($request->id);
         $major->delete();
-<<<<<<< Updated upstream
         return redirect()->back()->with('success', 'Xóa thành công');
-=======
-        return back()->with('success', 'Xóa thành công');
->>>>>>> Stashed changes
     }
 }
