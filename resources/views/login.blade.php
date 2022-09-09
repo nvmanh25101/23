@@ -37,21 +37,22 @@
                 </div>
 
                 <!-- title-->
-                <h4 class="mt-0">Sign In</h4>
+                <h4 class="mt-0">Đăng nhập</h4>
                 <p class="text-muted mb-4">Enter your email address and password to access account.</p>
 
                 <!-- form -->
-                <form action="#">
+                <form action="{{ route('process_login') }}" method="post">
+                    @csrf
                     <div class="form-group">
                         <label for="emailaddress">Email address</label>
-                        <input class="form-control" type="email" id="emailaddress" required=""
+                        <input class="form-control" type="email" name="email" id="emailaddress" required
                                placeholder="Enter your email">
                     </div>
                     <div class="form-group">
                         <a href="pages-recoverpw-2.html" class="text-muted float-right"><small>Forgot your
                                 password?</small></a>
                         <label for="password">Password</label>
-                        <input class="form-control" type="password" required="" id="password"
+                        <input class="form-control" type="password" name="password" required id="password"
                                placeholder="Enter your password">
                     </div>
                     <div class="form-group mb-3">
@@ -61,7 +62,7 @@
                         </div>
                     </div>
                     <div class="form-group mb-0 text-center">
-                        <button class="btn btn-primary btn-block" type="submit"><i class="mdi mdi-login"></i> Log In
+                        <button class="btn btn-primary btn-block" type="submit"><i class="mdi mdi-login"></i> Đăng nhập
                         </button>
                     </div>
                 </form>
