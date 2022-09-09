@@ -9,12 +9,9 @@ use App\Http\Controllers\CourseController;
 use App\Http\Controllers\CourseDetailController;
 use App\Http\Controllers\FacultyController;
 use App\Http\Controllers\MajorController;
-<<<<<<< Updated upstream
 use App\Http\Controllers\PlanController;
 use App\Http\Controllers\SemesterController;
 use App\Http\Controllers\StudentController;
-=======
->>>>>>> Stashed changes
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\TestController;
@@ -637,6 +634,7 @@ Route::group([
 });
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> 9c07f47 (Revert "Merge pull request #9 from nvmanh25101/mar")
 Route::prefix('test')->name('test.')->group(function () {
     Route::get('/', [TestController::class, 'test']);
@@ -889,3 +887,5 @@ Route::prefix('sinh-vien')->name('student.')->group(function () {
 =======
 >>>>>>> Stashed changes
 >>>>>>> a31901f (Revert "Revert "Merge pull request #9 from nvmanh25101/mar"")
+=======
+>>>>>>> a8d6477 (Revert "fix")
