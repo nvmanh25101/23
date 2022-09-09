@@ -9,9 +9,12 @@ use App\Http\Controllers\CourseController;
 use App\Http\Controllers\CourseDetailController;
 use App\Http\Controllers\FacultyController;
 use App\Http\Controllers\MajorController;
+<<<<<<< Updated upstream
 use App\Http\Controllers\PlanController;
 use App\Http\Controllers\SemesterController;
 use App\Http\Controllers\StudentController;
+=======
+>>>>>>> Stashed changes
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\TestController;
@@ -344,10 +347,15 @@ Route::group([
     Route::delete('/destroy/{subject}', [SubjectController::class, 'destroy'])->name('destroy');
 });
 
+<<<<<<< HEAD
 Route::prefix('test')->name('test.')->group(function () {
     Route::get('/', [TestController::class, 'test']);
 });
 
+=======
+<<<<<<< Updated upstream
+=======
+>>>>>>> 41105d6 (fix)
 
 Route::prefix('major')->name('major.')->group(function () {
     Route::get('/', [MajorController::class, 'index'])->name('index');
@@ -369,6 +377,7 @@ Route::prefix('major')->name('major.')->group(function () {
     });
     Route::delete('/delete', [MajorController::class, 'destroy'])->name('destroy');
 });
+<<<<<<< HEAD
 
 Route::prefix('academic-year')->name('academicYear.')->group(function () {
     Route::get('/', [AcademicYearController::class, 'index'])->name('index');
@@ -566,3 +575,6 @@ Route::prefix('sinh-vien')->name('student.')->group(function () {
 =======
 >>>>>>> 94a39e5 (Update web.php)
 });
+=======
+>>>>>>> Stashed changes
+>>>>>>> 41105d6 (fix)
