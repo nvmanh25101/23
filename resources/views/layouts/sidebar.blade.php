@@ -51,7 +51,7 @@
             <li class="side-nav-item">
                 <a href="{{ route('teachers.index') }}" class="side-nav-link">
                     <i class="uil-home-alt"></i>
-                    <span> Giảng12 viên </span>
+                    <span> Giảng viên </span>
                 </a>
             </li>
 
