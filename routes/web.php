@@ -15,7 +15,6 @@ use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\TrainingController;
-use App\Models\Student;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -568,19 +567,6 @@ Route::group([
     Route::delete('/destroy/{teacher}', [TeacherController::class, 'destroy'])->name('destroy');
 });
 
-Route::group([
-    'as' => 'student.',
-    'prefix' => 'student',
-], static function () {
-    Route::get('/', [TeacherController::class, 'index'])->name('index');
-    Route::get('/api', [TeacherController::class, 'api'])->name('api');
-    Route::get('/create', [TeacherController::class, 'create'])->name('create');
-    Route::post('/store', [TeacherController::class, 'store'])->name('store');
-    Route::get('/edit/{student}', [TeacherController::class, 'edit'])->name('edit');
-    Route::put('/edit/{student}', [TeacherController::class, 'update'])->name('update');
-    Route::delete('/destroy/{student}', [TeacherController::class, 'destroy'])->name('destroy');
-});
-
 Route::prefix('classroom')->name('classroom.')->group(function () {
     Route::get('/', [ClassroomController::class, 'index'])->name('index');
     Route::get('/api', [ClassroomController::class, 'api'])->name('api');
@@ -736,6 +722,7 @@ Route::prefix('phan-cong-giang-day')->name('assignment.')->group(function () {
 });
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> ba88b5e (Revert "Revert "assigment fix"")
 
@@ -771,3 +758,5 @@ Route::prefix('sinh-vien')->name('student.')->group(function () {
 =======
 });
 >>>>>>> ba88b5e (Revert "Revert "assigment fix"")
+=======
+>>>>>>> 59dc183 (Revert "assigment fix")

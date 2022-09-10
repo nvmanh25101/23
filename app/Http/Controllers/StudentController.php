@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Assignment;
 use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -50,18 +49,7 @@ class StudentController extends Controller
     {
         //
     }
-    public function schedule($classroom_id)
-    {
-        return view('student.schedule', compact('classroom_id'));
-    }
-    public function renderSchedule(Request $request, $classroom_id)
-    {
-        $schedules = Assignment::where('classroom_id', $classroom_id)->with('classroom:name,id', 'subject:name,id')
-            ->where('date', ">", $request->startDateOfWeek)
-            ->where('date', "<", $request->endDateOfWeek)
-            ->get();
-        return $schedules;
-    }
+
     /**
      * Store a newly created resource in storage.
      *
