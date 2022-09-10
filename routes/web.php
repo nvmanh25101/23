@@ -15,6 +15,7 @@ use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\TrainingController;
+use App\Models\Student;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -567,6 +568,19 @@ Route::group([
     Route::delete('/destroy/{teacher}', [TeacherController::class, 'destroy'])->name('destroy');
 });
 
+Route::group([
+    'as' => 'student.',
+    'prefix' => 'student',
+], static function () {
+    Route::get('/', [TeacherController::class, 'index'])->name('index');
+    Route::get('/api', [TeacherController::class, 'api'])->name('api');
+    Route::get('/create', [TeacherController::class, 'create'])->name('create');
+    Route::post('/store', [TeacherController::class, 'store'])->name('store');
+    Route::get('/edit/{student}', [TeacherController::class, 'edit'])->name('edit');
+    Route::put('/edit/{student}', [TeacherController::class, 'update'])->name('update');
+    Route::delete('/destroy/{student}', [TeacherController::class, 'destroy'])->name('destroy');
+});
+
 Route::prefix('classroom')->name('classroom.')->group(function () {
     Route::get('/', [ClassroomController::class, 'index'])->name('index');
     Route::get('/api', [ClassroomController::class, 'api'])->name('api');
@@ -721,6 +735,9 @@ Route::prefix('phan-cong-giang-day')->name('assignment.')->group(function () {
 >>>>>>> 8656e3b (assigment fix)
 });
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> ba88b5e (Revert "Revert "assigment fix"")
 
 
 Route::prefix('sinh-vien')->name('student.')->group(function () {
@@ -729,6 +746,7 @@ Route::prefix('sinh-vien')->name('student.')->group(function () {
     Route::get('/thoi-khoa-bieu/{classroom_id}', [StudentController::class, 'schedule'])->name('schedule');
 
     Route::get('/tai-thong-tin-tkb/{classroom_id?}', [StudentController::class, 'renderSchedule'])->name('renderSchedule');
+<<<<<<< HEAD
 =======
 >>>>>>> 94a39e5 (Update web.php)
 });
@@ -750,3 +768,6 @@ Route::prefix('sinh-vien')->name('student.')->group(function () {
 >>>>>>> 366ccc6 (Revert "Merge pull request #9 from nvmanh25101/mar")
 =======
 >>>>>>> c3666bc (Revert "assigment fix")
+=======
+});
+>>>>>>> ba88b5e (Revert "Revert "assigment fix"")
