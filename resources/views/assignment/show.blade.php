@@ -8,11 +8,10 @@
     <div class="col-12">
         <div class="form-group">
             <input type="hidden" id="start-val" name="startDateOfWeek">
+            <button class="btn btn-danger" id="prev">Trước</button>
             <input type="date" id="now">
+            <button class="btn btn-danger" id="next">Sau</button>
             <input type="hidden" id="end-val" name="endDateOfWeek">
-            <button class="btn btn-danger" id="prev">Tuần trước</button>
-            <button class="btn btn-danger" id="today">Hiện tại</button>
-            <button class="btn btn-danger" id="next">Tuần sau</button>
         </div>
         <div class="accordion custom-accordion" id="assignment">
 
@@ -76,15 +75,7 @@
                 success: function(response) {
                     response.forEach((element, index) => {
                         moment.locale('vi');
-                        time = "";
-                        if (element.lesson_end <= 6) {
-                            time = "Sáng";
-                        } else if (element.lesson_end > 6 && element.lesson_end <= 12) {
-                            time = 'Chiều';
-                        } else {
-                            time = "Tối";
-                        }
-                        date = moment(element.date).format("DD/MM/YYYY (dddd - ") + time + ")";
+                        date = moment(element.date).format("DD/MM/YYYY (dddd)");
                         assignment.append(
                             `
                                 <div class="accordion custom-accordion" id="custom-accordion-one">
@@ -135,14 +126,10 @@
             current_date_input.val(now_date);
             generateDate()
             render(start_date_input.val(), end_date_input.val(), teacher_id);
-            $('#today').click(function(e) {
-                current_date_input.val(now_date);
-                generateDate()
-                render(start_date_input.val(), end_date_input.val(), teacher_id);
-            });
             $('#prev').click(function(e) {
                 generateDate("-")
                 render(start_date_input.val(), end_date_input.val(), teacher_id);
+
             });
             $('#next').click(function(e) {
                 generateDate("+")
