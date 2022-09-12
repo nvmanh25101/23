@@ -4,8 +4,8 @@
     <link href="{{ asset('css/test.css') }}" rel="stylesheet" type="text/css">
 @endpush
 @section('content')
-    <div class="col-12 d-flex justify-content-around">
-        <form method="post" action="{{ route('assignment.store') }}" class="needs-validation w-50 pr-3" novalidate>
+    <div class="col-12">
+        <form method="post" action="{{ route('assignment.store') }}" class="needs-validation" novalidate>
             @csrf
             <div class="form-group">
                 <select name="teacher_id" id="teacher_select" class="form-control" required>
@@ -19,35 +19,6 @@
             <div id="assignment-group"></div>
             <button class="btn btn-primary d-none" type="submit" id="store">Thêm</button>
         </form>
-        <div class="calendar w-50 ">
-            <div class="timetable">
-                <div class="week-names">
-                    <div id="1">Thứ 2</div>
-                    <div id="2">Thứ 3</div>
-                    <div id="3">Thứ 4</div>
-                    <div id="4">Thứ 5</div>
-                    <div id="5">Thứ 6</div>
-                    <div class="weekend" id="6">Thứ 7</div>
-                    <div class="weekend" id="0">Chủ Nhật</div>
-                </div>
-                <div class="time-interval">
-                    @for ($i = 1; $i <= 16; $i++)
-                        <div>Tiết {{ $i }}</div>
-                    @endfor
-                </div>
-                <div class="content">
-                    @for ($i = 1; $i <= 16; $i++)
-                        <div class="{{ $i }}" data-date="1"></div>
-                        <div class="{{ $i }}" data-date="2"></div>
-                        <div class="{{ $i }}" data-date="3"></div>
-                        <div class="{{ $i }}" data-date="4"></div>
-                        <div class="{{ $i }}" data-date="5"></div>
-                        <div class="weekend {{ $i }}" data-date="6"></div>
-                        <div class="weekend {{ $i }}" data-date="0"></div>
-                    @endfor
-                </div>
-            </div>
-        </div>
     </div>
 @endsection
 
