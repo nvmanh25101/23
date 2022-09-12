@@ -2,11 +2,12 @@
 
 namespace App\Http\Middleware;
 
+use App\Enums\TeacherLevelEnum;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class checkAdminLogin
+class TrainningDepartmentLogin
 {
     /**
      * Handle an incoming request.
@@ -17,20 +18,10 @@ class checkAdminLogin
      */
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::check())
+        if (Auth::user()->level !== TeacherLevelEnum::PHONG_DAO_TAO)
         {
-
-            $user = Auth::user();
-            if ($user->level == 1 )
-            {
-                return $next($request);
-            }
-
-            Auth::logout();
-            return redirect()->route('login');
+            return redirect()->route('home')->with('error', 'Bạn không có quyền truy cập vào trang này');
         }
-
-        return redirect('login');
-
+        return $next($request);
     }
 }
