@@ -16,7 +16,6 @@ use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\TrainingController;
-use App\Models\Student;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -36,6 +35,7 @@ Route::post('login', [AuthController::class, 'processLogin'])->name('process_log
 Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::group([
+<<<<<<< HEAD
     'middleware' => 'checkTeacherLogin'
 ], static function () {
 <<<<<<< HEAD
@@ -45,6 +45,16 @@ Route::group([
 
     Route::group([
         'middleware' => 'TrainningDepartmentLogin'
+=======
+    // 'middleware' => 'checkTeacherLogin'
+], static function () {
+    Route::get('/', function () {
+        return view('layouts.master');
+    })->name('home');
+
+    Route::group([
+        // 'middleware' => 'TrainningDepartmentLogin'
+>>>>>>> 94a39e5 (Update web.php)
     ], static function () {
 
         Route::get('/load-subject/{faculty_id?}', [AjaxController::class, 'loadSubject'])->name('loadSubject');
@@ -315,6 +325,7 @@ Route::group([
             Route::delete('/delete', [AssignmentController::class, 'destroy'])->name('destroy');
         });
     });
+<<<<<<< HEAD
 =======
     Route::get('/', [SubjectController::class, 'index'])->name('index');
     Route::get('/api', [SubjectController::class, 'api'])->name('api');
@@ -557,4 +568,6 @@ Route::prefix('sinh-vien')->name('student.')->group(function () {
     Route::get('/thoi-khoa-bieu/{classroom_id}', [StudentController::class, 'schedule'])->name('schedule');
 
     Route::get('/tai-thong-tin-tkb/{classroom_id?}', [StudentController::class, 'renderSchedule'])->name('renderSchedule');
+=======
+>>>>>>> 94a39e5 (Update web.php)
 });
