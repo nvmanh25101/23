@@ -50,15 +50,19 @@ Route::group([
         Route::get('/load-teacher/{faculty_id?}', [AjaxController::class, 'loadTeacher'])->name('loadTeacher');
         Route::get('/load-facultyName/faculty_name', [AjaxController::class, 'loadFaculty'])->name('loadFacultyName');
 
-        Route::get('/load-subject-from-classroom/{classroom?}',
-            [AjaxController::class, 'loadSubjectFromClassRoom'])->name('loadSubjectFromClassRoom');
+        Route::get(
+            '/load-subject-from-classroom/{classroom?}',
+            [AjaxController::class, 'loadSubjectFromClassRoom']
+        )->name('loadSubjectFromClassRoom');
 
         Route::get('/countClassRoom/{major_id?}', [AjaxController::class, 'countClassRoom'])->name('countClassRoom');
 
         Route::get('/getSemester/{training_id?}', [AjaxController::class, 'getSemester'])->name('getSemester');
 
-        Route::get('/chuong-trinh-khung/tim-kiem/{classroom_id?}',
-            [AjaxController::class, 'loadPlanFromClassRoom'])->name('loadPlanFromClassRoom');
+        Route::get(
+            '/chuong-trinh-khung/tim-kiem/{classroom_id?}',
+            [AjaxController::class, 'loadPlanFromClassRoom']
+        )->name('loadPlanFromClassRoom');
 
         Route::prefix('faculty')->name('faculty.')->group(function () {
             Route::get('/', [FacultyController::class, 'index'])->name('index');
@@ -249,26 +253,26 @@ Route::group([
             // Route::delete('/xoa', [TrainingController::class, 'destroy'])->name('destroy');
         });
 
-//    Route::prefix('he-dao-tao')->name('training.')->group(function () {
-//        Route::get('/danh-sach', [TrainingController::class, 'index'])->name('index');
-//        Route::get('/api', [TrainingController::class, 'api'])->name('api');
-//        Route::get('/show/{id?}', [TrainingController::class, 'show'])->name('show');
-//        //
-//        Route::get('/them-moi', function () {
-//            return abort(404);
-//        });
-//        Route::post('/them-moi', [TrainingController::class, 'store'])->name('store');
-//        //
-//        Route::get('/chinh-sua', function () {
-//            return abort(404);
-//        });
-//        Route::post('/chinh-sua', [TrainingController::class, 'update'])->name('update');
-//        //
-//        Route::get('/xoa', function () {
-//            return abort(404);
-//        });
-//        // Route::delete('/xoa', [TrainingController::class, 'destroy'])->name('destroy');
-//    });
+        Route::prefix('he-dao-tao')->name('training.')->group(function () {
+            Route::get('/danh-sach', [TrainingController::class, 'index'])->name('index');
+            Route::get('/api', [TrainingController::class, 'api'])->name('api');
+            Route::get('/show/{id?}', [TrainingController::class, 'show'])->name('show');
+            //
+            Route::get('/them-moi', function () {
+                return abort(404);
+            });
+            Route::post('/them-moi', [TrainingController::class, 'store'])->name('store');
+            //
+            Route::get('/chinh-sua', function () {
+                return abort(404);
+            });
+            Route::post('/chinh-sua', [TrainingController::class, 'update'])->name('update');
+            //
+            Route::get('/xoa', function () {
+                return abort(404);
+            });
+            // Route::delete('/xoa', [TrainingController::class, 'destroy'])->name('destroy');
+        });
 
         Route::prefix('chuong-trinh-khung')->name('plan.')->group(function () {
             Route::get('/', [PlanController::class, 'index'])->name('index');
@@ -293,8 +297,10 @@ Route::group([
 
             Route::get('/api', [AssignmentController::class, 'api'])->name('api');
             Route::get('/chi-tiet/{teacher_id}', [AssignmentController::class, 'show'])->name('show');
-            Route::get('/lich-day-theo-tuan/{teacher_id?}',
-                [AssignmentController::class, 'assigmentsWeekly'])->name('assigmentsWeekly');
+            Route::get(
+                '/lich-day-theo-tuan/{teacher_id?}',
+                [AssignmentController::class, 'assigmentsWeekly']
+            )->name('assigmentsWeekly');
 
             // Route::get('/tim-kiem/{teacher_id}', [AssignmentController::class, 'show'])->name('show');
 
@@ -308,4 +314,3 @@ Route::group([
         });
     });
 });
-
