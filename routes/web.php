@@ -36,6 +36,7 @@ Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::group([
 <<<<<<< HEAD
+<<<<<<< HEAD
     'middleware' => 'checkTeacherLogin'
 ], static function () {
 <<<<<<< HEAD
@@ -47,14 +48,21 @@ Route::group([
         'middleware' => 'TrainningDepartmentLogin'
 =======
     // 'middleware' => 'checkTeacherLogin'
+=======
+    'middleware' => 'checkTeacherLogin'
+>>>>>>> 3f5c58c (Update web.php)
 ], static function () {
     Route::get('/', function () {
-        return view('layouts.master');
+        return view('layouts.home');
     })->name('home');
 
     Route::group([
+<<<<<<< HEAD
         // 'middleware' => 'TrainningDepartmentLogin'
 >>>>>>> 94a39e5 (Update web.php)
+=======
+        'middleware' => 'TrainningDepartmentLogin'
+>>>>>>> 3f5c58c (Update web.php)
     ], static function () {
 
         Route::get('/load-subject/{faculty_id?}', [AjaxController::class, 'loadSubject'])->name('loadSubject');
