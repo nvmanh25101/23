@@ -15,6 +15,7 @@ use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\TrainingController;
+use App\Models\Student;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -141,6 +142,19 @@ Route::group([
     Route::get('/edit/{teacher}', [TeacherController::class, 'edit'])->name('edit');
     Route::put('/edit/{teacher}', [TeacherController::class, 'update'])->name('update');
     Route::delete('/destroy/{teacher}', [TeacherController::class, 'destroy'])->name('destroy');
+});
+
+Route::group([
+    'as' => 'student.',
+    'prefix' => 'student',
+], static function () {
+    Route::get('/', [TeacherController::class, 'index'])->name('index');
+    Route::get('/api', [TeacherController::class, 'api'])->name('api');
+    Route::get('/create', [TeacherController::class, 'create'])->name('create');
+    Route::post('/store', [TeacherController::class, 'store'])->name('store');
+    Route::get('/edit/{student}', [TeacherController::class, 'edit'])->name('edit');
+    Route::put('/edit/{student}', [TeacherController::class, 'update'])->name('update');
+    Route::delete('/destroy/{student}', [TeacherController::class, 'destroy'])->name('destroy');
 });
 
 Route::prefix('classroom')->name('classroom.')->group(function () {
@@ -292,4 +306,13 @@ Route::prefix('phan-cong-giang-day')->name('assignment.')->group(function () {
     Route::post('/edit', [AssignmentController::class, 'update'])->name('update');
 
     Route::delete('/delete', [AssignmentController::class, 'destroy'])->name('destroy');
+});
+
+
+Route::prefix('sinh-vien')->name('student.')->group(function () {
+    // Route::get('/', [Student::class, 'index'])->name('index');
+
+    Route::get('/thoi-khoa-bieu/{classroom_id}', [StudentController::class, 'schedule'])->name('schedule');
+
+    Route::get('/tai-thong-tin-tkb/{classroom_id?}', [StudentController::class, 'renderSchedule'])->name('renderSchedule');
 });
