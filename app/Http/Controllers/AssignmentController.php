@@ -53,15 +53,23 @@ class AssignmentController extends Controller
     public function findClass(Request $request)
     {
         $classrooms = Classroom::query();
+        $lessonLearnedInDay = [];
+        $lessonInsert = [];
         $assignment = Assignment::query()
+            ->select('lesson_start', 'lesson_end')
             ->where('date', $request->date)
-            ->where('teacher_id', $request->teacher_id)
-            ->whereRaw("((" . $request->lesson_start . ' between lesson_start and lesson_end)')
-            ->orWhereRaw("(" . $request->lesson_end . ' between lesson_start and lesson_end))')
-            ->count();
-        // ->toSql();
-        // dd($assignment);
-        if ($assignment > 0) {
+            ->where('teacher_id', $request->teacher_id)->get()->toArray();
+        foreach ($assignment as $key => $value) {
+            for ($i = 0; $i <= $key; $i++) {
+                for ($i = $value['lesson_start']; $i <= $value['lesson_end']; $i++) {
+                    $lessonLearnedInDay[] = $i;
+                }
+            }
+        }
+        for ($i = $request->lesson_start; $i <= $request->lesson_end; $i++) {
+            $lessonInsert[] =  (int)$i;
+        }
+        if (count(array_intersect($lessonInsert, $lessonLearnedInDay)) > 0) {
             $error = [
                 'type' => 'error',
                 'message' => 'Giáo viên này đang bận. Vui lòng chọn thời gian khác',
@@ -74,6 +82,7 @@ class AssignmentController extends Controller
                 $query->whereRaw("((" . $request->lesson_start . ' between lesson_start and lesson_end)');
                 $query->orWhereRaw("(" . $request->lesson_end . ' between lesson_start and lesson_end))');
             });
+            // dd($classrooms->toSql());
         }
         $classrooms = $classrooms->get();
         // $classrooms = $classrooms->toSql();
@@ -165,6 +174,7 @@ class AssignmentController extends Controller
             foreach ($AssignmentInSemester as $key =>  $item) {
                 foreach ($item as $key => $each) {
                     Assignment::insert($each);
+                    unset($each);
                 }
             }
         }
@@ -184,12 +194,16 @@ class AssignmentController extends Controller
 
     public function assigmentsWeekly(Request $request, $teacher_id)
     {
-        $assigments = Assignment::where('teacher_id', $teacher_id)->with('classroom:name,id', 'subject:name,id')
-            ->where('date', ">", $request->startDateOfWeek)
-            ->where('date', "<", $request->endDateOfWeek)
-            ->get();
-        // ->toSql();
-        return $assigments;
+        try {
+            $assigments = Assignment::where('teacher_id', $teacher_id)->with('classroom:name,id', 'subject:name,id')
+                ->where('date', ">", $request->startDateOfWeek)
+                ->where('date', "<", $request->endDateOfWeek)
+                ->get();
+            // ->toSql();
+            return $assigments;
+        } catch (\Throwable $th) {
+            return abort(404);
+        }
     }
 
     /**

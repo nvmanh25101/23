@@ -14,7 +14,7 @@
             <button class="btn btn-danger" id="today">Hiện tại</button>
             <button class="btn btn-danger" id="next">Tuần sau</button>
         </div>
-        <div class="accordion custom-accordion" id="assignment">
+        <div class="accordion custom-accordion" id="schedule">
 
         </div>
     </div>
@@ -62,12 +62,12 @@
             return true;
         }
 
-        function render(start, end, teacher_id) {
-            let assignment = $('#assignment')
-            assignment.html('');
+        function render(start, end, classroom_id) {
+            let schedule = $('#schedule')
+            schedule.html('');
             $.ajax({
                 type: "get",
-                url: "{{ route('assignment.assigmentsWeekly') }}/" + teacher_id,
+                url: "{{ route('student.renderSchedule') }}/" + classroom_id,
                 data: {
                     startDateOfWeek: start,
                     endDateOfWeek: end,
@@ -85,7 +85,7 @@
                             time = "Tối";
                         }
                         date = moment(element.date).format("DD/MM/YYYY (dddd - ") + time + ")";
-                        assignment.append(
+                        schedule.append(
                             `
                                 <div class="accordion custom-accordion" id="custom-accordion-one">
                                     <div class="card mb-0">
@@ -131,27 +131,27 @@
             let start_date_input = $('#start-val');
             let end_date_input = $('#end-val');
             var now_date = moment().format("YYYY-MM-DD");
-            let teacher_id = "{{ $teacher_id }}";
+            let classroom_id = "{{ $classroom_id }}";
             current_date_input.val(now_date);
             generateDate()
-            render(start_date_input.val(), end_date_input.val(), teacher_id);
+            render(start_date_input.val(), end_date_input.val(), classroom_id);
             $('#today').click(function(e) {
                 current_date_input.val(now_date);
                 generateDate()
-                render(start_date_input.val(), end_date_input.val(), teacher_id);
+                render(start_date_input.val(), end_date_input.val(), classroom_id);
             });
             $('#prev').click(function(e) {
                 generateDate("-")
-                render(start_date_input.val(), end_date_input.val(), teacher_id);
+                render(start_date_input.val(), end_date_input.val(), classroom_id);
             });
             $('#next').click(function(e) {
                 generateDate("+")
-                render(start_date_input.val(), end_date_input.val(), teacher_id);
+                render(start_date_input.val(), end_date_input.val(), classroom_id);
             });
             current_date_input.change(function(e) {
                 e.preventDefault();
                 generateDate();
-                render(start_date_input.val(), end_date_input.val(), teacher_id);
+                render(start_date_input.val(), end_date_input.val(), classroom_id);
             });
         });
         // console.log(start, startday);
@@ -162,7 +162,7 @@
             let course_detail = $('#course_detail')
             let subject_name = $('#subject_name')
             let teacher_name = $('#teacher_name')
-            let teacher_id = $('#teacher_id')
+            let classroom_id = $('#classroom_id')
             let courseDetailFull = $('#courseDetailFull')
             let weekday = $('#weekday')
             let selectDay = $('input[name="timetable"]');
@@ -181,7 +181,7 @@
                         course_detail.removeClass('d-none');
                         subject_name.val(response.subject)
                         teacher_name.val(response.teacher_name)
-                        teacher_id.val(response.teacher_id)
+                        classroom_id.val(response.classroom_id)
                         weekday.val(response.weekday)
                         courseDetailFull.val(response.weekday)
                         divCreate.empty();
