@@ -84,15 +84,3 @@
         </form>
     </div>
 @endsection
-@push('js')
-    <script>
-        $(document).ready(function () {
-
-           let birthdate = $('.birthdate-input');
-           birthdate.change(function () {
-                console.log(birthdate.val());
-            });
-        });
-
-    </script>
-@endpush
