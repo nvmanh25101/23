@@ -35,14 +35,14 @@ Route::post('login', [AuthController::class, 'processLogin'])->name('process_log
 Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::group([
-    'middleware' => 'checkTeacherLogin'
+    // 'middleware' => 'checkTeacherLogin'
 ], static function () {
     Route::get('/', function () {
-        return view('layouts.home');
+        return view('layouts.master');
     })->name('home');
 
     Route::group([
-        'middleware' => 'TrainningDepartmentLogin'
+        // 'middleware' => 'TrainningDepartmentLogin'
     ], static function () {
 
         Route::get('/load-subject/{faculty_id?}', [AjaxController::class, 'loadSubject'])->name('loadSubject');
