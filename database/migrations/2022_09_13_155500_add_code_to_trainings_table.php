@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddTrainingIdColumnToClassroomsTable extends Migration
+class AddCodeToTrainingsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddTrainingIdColumnToClassroomsTable extends Migration
      */
     public function up()
     {
-        Schema::table('classrooms', function (Blueprint $table) {
-            $table->foreignId('training_id')->after('academic_year_id')->constrained();
+        Schema::table('trainings', function (Blueprint $table) {
+            $table->string('code');
         });
     }
 
@@ -25,9 +25,8 @@ class AddTrainingIdColumnToClassroomsTable extends Migration
      */
     public function down()
     {
-        Schema::table('classrooms', function (Blueprint $table) {
-            $table->dropForeign('training_id');
-            $table->dropColumn('training_id');
+        Schema::table('trainings', function (Blueprint $table) {
+            $table->dropColumn('code');
         });
     }
 }

@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class Faculty extends Model
 {
     use HasFactory;
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'type'];
 
     public function majors()
     {

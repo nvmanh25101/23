@@ -56,6 +56,7 @@ class TrainingController extends Controller
         $training = new Training();
         $training->fill($request->all());
         $training->save();
+        return redirect()->route('training.index')->with('message', 'Thêm thành công');
     }
 
     /**

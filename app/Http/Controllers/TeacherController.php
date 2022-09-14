@@ -42,9 +42,9 @@ class TeacherController extends Controller
     public function api()
     {
         return DataTables::of(Teacher::query()->with('faculty'))
-//            ->addColumn('infor', function ($object) {
-//                return $object->genderName.' - '.$object->age.' Tuổi'.'<br>'.$object->phone;
-//            })
+            //            ->addColumn('infor', function ($object) {
+            //                return $object->genderName.' - '.$object->age.' Tuổi'.'<br>'.$object->phone;
+            //            })
             ->addColumn('faculty_name', function ($object) {
                 return $object->faculty->name;
             })
@@ -75,17 +75,19 @@ class TeacherController extends Controller
                     $query->where('id', $keyword);
                 });
             })
-//            ->rawColumns(['infor', 'infor'])
+            //            ->rawColumns(['infor', 'infor'])
             ->make(true);
     }
 
     public function create()
     {
         $faculties = Faculty::query()->get(['id', 'name']);
-        return view('teachers.create',
+        return view(
+            'teachers.create',
             [
                 'faculties' => $faculties,
-            ]);
+            ]
+        );
     }
 
     public function store(StoreRequest $request)
@@ -108,11 +110,13 @@ class TeacherController extends Controller
         $teacher = Teacher::query()->findOrFail($teacherId);
         $faculties = Faculty::query()->get(['id', 'name']);
 
-        return view('teachers.edit',
+        return view(
+            'teachers.edit',
             [
                 'teacher' => $teacher,
                 'faculties' => $faculties,
-            ]);
+            ]
+        );
     }
 
     public function update(UpdateRequest $request, $teacherId)

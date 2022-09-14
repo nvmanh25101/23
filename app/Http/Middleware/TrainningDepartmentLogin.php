@@ -18,8 +18,7 @@ class TrainningDepartmentLogin
      */
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::user()->level !== TeacherLevelEnum::PHONG_DAO_TAO)
-        {
+        if (Auth::user()->level !== TeacherLevelEnum::TRUONG_KHOA) {
             return redirect()->route('home')->with('error', 'Bạn không có quyền truy cập vào trang này');
         }
         return $next($request);

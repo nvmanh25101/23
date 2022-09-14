@@ -10,6 +10,10 @@ class Classroom extends Model
     use HasFactory;
     protected $fillable = ['name', 'major_id', 'training_id', 'academic_year_id'];
 
+    public function students()
+    {
+        return $this->hasMany(Student::class);
+    }
     public function major()
     {
         return $this->belongsTo(Major::class);

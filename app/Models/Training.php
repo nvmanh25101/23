@@ -9,5 +9,5 @@ class Training extends Model
 {
     use HasFactory;
     public $timestamps = false;
-    protected $fillable = ['name', 'year'];
+    protected $fillable = ['name', 'year', 'code'];
 }

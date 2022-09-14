@@ -29,7 +29,7 @@
                         <thead>
                             <tr role="row">
                                 <th>#ID</th>
-                                <th>Tên</th>
+                                <th>Tên khoa</th>
                                 <th>Ngày thành lập</th>
                                 <th>Quản trị</th>
                             </tr>
@@ -49,6 +49,11 @@
                             <div class="form-group">
                                 <label for="name">Tên khoa</label>
                                 <input class="form-control" type="text" id="name" name="name" required>
+                                <label for="type">Loại</label>
+                                <select name="type" id="type" class="form-control">
+                                    <option value="0">Sinh viên</option>
+                                    <option value="1">Giảng viên</option>
+                                </select>
                             </div>
                             <div class="form-group text-center ">
                                 <button class="btn btn-primary w-100" type="submit">Thêm mới</button>

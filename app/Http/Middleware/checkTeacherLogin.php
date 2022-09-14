@@ -18,19 +18,15 @@ class checkTeacherLogin
      */
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::check())
-        {
+        if (Auth::check()) {
             $user = Auth::user();
-            if ($user->level === TeacherLevelEnum::GIANG_VIEN || $user->level === TeacherLevelEnum::PHONG_DAO_TAO)
-            {
+            if ($user->level == TeacherLevelEnum::GIANG_VIEN || $user->level == TeacherLevelEnum::TRUONG_KHOA) {
                 return $next($request);
             }
-
             Auth::logout();
             return redirect()->route('login');
         }
 
         return redirect('login');
-
     }
 }

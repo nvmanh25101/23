@@ -50,9 +50,10 @@
                             @csrf
                             <div class="form-group">
                                 <label for="name">Hệ đào tạo</label>
-                                <select name="training_id" id="" class="form-control">
+                                <select name="training_id" id="training_id" class="form-control">
                                     @foreach ($trainings as $training)
-                                        <option value="{{ $training->id }}">{{ $training->name }}
+                                        <option value="{{ $training->id }}" data-code="{{ $training->code }}">
+                                            {{ $training->name }}
                                         </option>
                                     @endforeach
                                 </select>
@@ -279,23 +280,39 @@
             $('.major_id').select2({
                 placeholder: "Chọn ngành",
             });
+            $('#training_id').select2({
+                placeholder: "Chọn hệ đào tạo",
+            });
         });
     </script>
 
     <script>
-        let major_select = $('#major');
-        let name = $('#name');
-        let year = $('#year');
-        major_select.on('select2:select', function(e) {
-            let id = major_select.find(':selected').val();
+        function renderName(id) {
             $.ajax({
                 type: "get",
                 url: "{{ route('countClassRoom') }}/" + id,
                 success: function(response) {
-                    name.val(year.find(':selected').data('code') + major_select.find(':selected').data(
-                        'code') + "-" + (response - 0 + 1));
+                    name.val(year.find(':selected')
+                        .data(
+                            'code') + training_id.find(':selected').data('code') + "-" + major_select
+                        .find(
+                            ':selected').data(
+                            'code') + (response - 0 + 1));
                 }
             });
+        }
+
+        let major_select = $('#major');
+        let name = $('#name');
+        let year = $('#year');
+        let training_id = $('#training_id');
+        major_select.on('select2:select', function(e) {
+            let id = major_select.find(':selected').val();
+            renderName(id);
+        });
+        training_id.on('select2:select', function(e) {
+            let id = major_select.find(':selected').val();
+            renderName(id);
         });
     </script>
 

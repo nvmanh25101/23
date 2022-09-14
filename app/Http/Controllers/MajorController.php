@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Faculty;
 use App\Models\Major;
+use App\Models\Training;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Yajra\Datatables\Datatables;

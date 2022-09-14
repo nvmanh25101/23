@@ -51,14 +51,6 @@
                         <form action="{{ route('major.store') }}" class="pl-3 pr-3" method="post" novalidate>
                             @csrf
                             <div class="form-group">
-                                <label for="name">Tên ngành học</label>
-                                <input class="form-control" type="text" id="name" name="name" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="code">Mã ngành học</label>
-                                <input class="form-control" type="text" id="code" name="code" required>
-                            </div>
-                            <div class="form-group">
                                 <label for="faculty">Chọn khoa</label>
                                 <select class="form-control faculty_id" id="faculty" name="faculty_id" required>
                                     <option></option>
@@ -68,6 +60,15 @@
                                     @endforeach
                                 </select>
                             </div>
+                            <div class="form-group">
+                                <label for="name">Tên ngành học</label>
+                                <input class="form-control" type="text" id="name" name="name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="code">Mã ngành học</label>
+                                <input class="form-control" type="text" id="code" name="code" required>
+                            </div>
+
                             <div class="form-group text-center ">
                                 <button class="btn btn-primary w-100" type="submit">Thêm mới</button>
                             </div>

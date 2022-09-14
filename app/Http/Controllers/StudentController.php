@@ -30,14 +30,15 @@ class StudentController extends Controller
 
     public function api()
     {
-        return DataTables::of(Student::query())
-            ->addColumn('action', function ($id) {
-                return "<button type='button' class='btn action-icon' data-toggle='modal' data-target='#update-academicYear' data-id='$id->id'>
-            <i class='mdi mdi-pencil'></i>
-            </button>
-            <button type='button' class='btn action-icon' data-toggle='modal' data-target='#confirm-delete' data-id='$id->id'>
-            <i class='mdi mdi-delete'></i>
-            </button>";
+        return DataTables::of(Student::query()->with('classroom'))
+            ->editColumn('classroom', function ($student) {
+                return $student->classroom->name;
+            })
+            ->addColumn('edit', function ($object) {
+                return route('student.edit', $object);
+            })
+            ->addColumn('destroy', function ($object) {
+                return route('student.destroy', $object);
             })
             ->make(true);
     }
@@ -113,8 +114,11 @@ class StudentController extends Controller
      * @param  \App\Models\Student  $student
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Student $student)
+    public function destroy($studentId)
     {
-        //
+        Student::destroy($studentId);
+        return response()->json([
+            'success' => 'Xóa thành công',
+        ]);
     }
 }

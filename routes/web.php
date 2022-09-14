@@ -34,15 +34,26 @@ Route::get('login', [AuthController::class, 'login'])->name('login');
 Route::post('login', [AuthController::class, 'processLogin'])->name('process_login');
 Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 
+Route::prefix('phan-cong-giang-day')->name('assignment.')->group(function () {
+    Route::get('/diem-danh/{idAssignment?}', [AssignmentController::class, 'attendance'])->name('attendance');
+    Route::post('/diem-danh/{idAssignment?}', [AssignmentController::class, 'process_attendance'])->name('process_attendance');
+
+    Route::get('/chi-tiet/{teacher_id}', [AssignmentController::class, 'show'])->name('show');
+    Route::get(
+        '/lich-day-theo-tuan/{teacher_id?}',
+        [AssignmentController::class, 'assigmentsWeekly']
+    )->name('assigmentsWeekly');
+});
+
 Route::group([
-    // 'middleware' => 'checkTeacherLogin'
+    'middleware' => 'checkTeacherLogin'
 ], static function () {
     Route::get('/', function () {
         return view('layouts.master');
     })->name('home');
 
     Route::group([
-        // 'middleware' => 'TrainningDepartmentLogin'
+        'middleware' => 'TrainningDepartmentLogin'
     ], static function () {
 
         Route::get('/load-subject/{faculty_id?}', [AjaxController::class, 'loadSubject'])->name('loadSubject');
@@ -102,7 +113,6 @@ Route::group([
             Route::get('/', [TestController::class, 'test']);
         });
 
-
         Route::prefix('major')->name('major.')->group(function () {
             Route::get('/', [MajorController::class, 'index'])->name('index');
             Route::get('/api', [MajorController::class, 'api'])->name('api');
@@ -158,6 +168,19 @@ Route::group([
             Route::delete('/destroy/{teacher}', [TeacherController::class, 'destroy'])->name('destroy');
             Route::post('/import-csv', [TeacherController::class, 'importCsv'])->name('import_csv');
         });
+        Route::group([
+            'as' => 'student.',
+            'prefix' => 'student',
+        ], static function () {
+            Route::get('/', [StudentController::class, 'index'])->name('index');
+            Route::get('/api', [StudentController::class, 'api'])->name('api');
+            Route::get('/create', [StudentController::class, 'create'])->name('create');
+            Route::post('/store', [StudentController::class, 'store'])->name('store');
+            Route::get('/edit/{student}', [StudentController::class, 'edit'])->name('edit');
+            Route::put('/edit/{student}', [StudentController::class, 'update'])->name('update');
+            Route::delete('/destroy/{student}', [StudentController::class, 'destroy'])->name('destroy');
+            Route::post('/import-csv', [StudentController::class, 'importCsv'])->name('import_csv');
+        });
 
         Route::prefix('classroom')->name('classroom.')->group(function () {
             Route::get('/', [ClassroomController::class, 'index'])->name('index');
@@ -209,6 +232,26 @@ Route::group([
             Route::delete('/delete', [CourseDetailController::class, 'destroy'])->name('destroy');
         });
 
+        Route::prefix('he-dao-tao')->name('training.')->group(function () {
+            Route::get('/danh-sach', [TrainingController::class, 'index'])->name('index');
+            Route::get('/api', [TrainingController::class, 'api'])->name('api');
+            Route::get('/show/{id?}', [TrainingController::class, 'show'])->name('show');
+            //
+            Route::get('/them-moi', function () {
+                return abort(404);
+            });
+            Route::post('/them-moi', [TrainingController::class, 'store'])->name('store');
+            //
+            Route::get('/chinh-sua', function () {
+                return abort(404);
+            });
+            Route::post('/chinh-sua', [TrainingController::class, 'update'])->name('update');
+            //
+            Route::get('/xoa', function () {
+                return abort(404);
+            });
+            // Route::delete('/xoa', [TrainingController::class, 'destroy'])->name('destroy');
+        });
 
         Route::prefix('semester')->name('semester.')->group(function () {
             Route::get('/', [SemesterController::class, 'index'])->name('index');
@@ -231,49 +274,6 @@ Route::group([
             Route::delete('/delete', [SemesterController::class, 'destroy'])->name('destroy');
         });
 
-
-        Route::prefix('he-dao-tao')->name('training.')->group(function () {
-            Route::get('/danh-sach', [TrainingController::class, 'index'])->name('index');
-            Route::get('/api', [TrainingController::class, 'api'])->name('api');
-            Route::get('/show/{id?}', [TrainingController::class, 'show'])->name('show');
-            //
-            Route::get('/them-moi', function () {
-                return abort(404);
-            });
-            Route::post('/them-moi', [TrainingController::class, 'store'])->name('store');
-            //
-            Route::get('/chinh-sua', function () {
-                return abort(404);
-            });
-            Route::post('/chinh-sua', [TrainingController::class, 'update'])->name('update');
-            //
-            Route::get('/xoa', function () {
-                return abort(404);
-            });
-            // Route::delete('/xoa', [TrainingController::class, 'destroy'])->name('destroy');
-        });
-
-        Route::prefix('he-dao-tao')->name('training.')->group(function () {
-            Route::get('/danh-sach', [TrainingController::class, 'index'])->name('index');
-            Route::get('/api', [TrainingController::class, 'api'])->name('api');
-            Route::get('/show/{id?}', [TrainingController::class, 'show'])->name('show');
-            //
-            Route::get('/them-moi', function () {
-                return abort(404);
-            });
-            Route::post('/them-moi', [TrainingController::class, 'store'])->name('store');
-            //
-            Route::get('/chinh-sua', function () {
-                return abort(404);
-            });
-            Route::post('/chinh-sua', [TrainingController::class, 'update'])->name('update');
-            //
-            Route::get('/xoa', function () {
-                return abort(404);
-            });
-            // Route::delete('/xoa', [TrainingController::class, 'destroy'])->name('destroy');
-        });
-
         Route::prefix('chuong-trinh-khung')->name('plan.')->group(function () {
             Route::get('/', [PlanController::class, 'index'])->name('index');
             Route::get('/api', [PlanController::class, 'api'])->name('api');
@@ -289,19 +289,12 @@ Route::group([
             Route::delete('/delete', [PlanController::class, 'destroy'])->name('destroy');
         });
 
-
         Route::prefix('phan-cong-giang-day')->name('assignment.')->group(function () {
             Route::get('/', [AssignmentController::class, 'index'])->name('index');
 
             Route::get('/tim-lop', [AssignmentController::class, 'findClass'])->name('findClass');
 
             Route::get('/api', [AssignmentController::class, 'api'])->name('api');
-            Route::get('/chi-tiet/{teacher_id}', [AssignmentController::class, 'show'])->name('show');
-            Route::get(
-                '/lich-day-theo-tuan/{teacher_id?}',
-                [AssignmentController::class, 'assigmentsWeekly']
-            )->name('assigmentsWeekly');
-
             // Route::get('/tim-kiem/{teacher_id}', [AssignmentController::class, 'show'])->name('show');
 
             Route::get('/add', [AssignmentController::class, 'create'])->name('add');

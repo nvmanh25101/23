@@ -30,8 +30,6 @@ class StoreRequest extends FormRequest
             'name' => [
                 'required',
                 'string',
-                'min:3',
-                'max:255',
             ],
             'gender' => [
                 'required',
@@ -56,14 +54,10 @@ class StoreRequest extends FormRequest
             'address' => [
                 'required',
                 'string',
-                'min:3',
-                'max:255',
             ],
             'phone' => [
                 'required',
                 'string',
-                'min:10',
-                'max:15',
             ],
             'level' => [
                 'required',

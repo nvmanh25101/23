@@ -30,6 +30,7 @@
                             <tr role="row">
                                 <th>#ID</th>
                                 <th>Tên hệ đào tạo</th>
+                                <th>Tên ngắn</th>
                                 <th>Số năm đào tạo</th>
                             </tr>
                         </thead>
@@ -48,6 +49,10 @@
                             <div class="form-group">
                                 <label for="name">Tên hệ đào tạo</label>
                                 <input class="form-control" type="text" name="name">
+                            </div>
+                            <div class="form-group">
+                                <label for="code">Tên viết tắt</label>
+                                <input class="form-control" type="text" name="code" id="code">
                             </div>
                             <div class="form-group">
                                 <label for="year">Số năm đào tạo</label>
@@ -174,6 +179,9 @@
                     },
                     {
                         data: 'name',
+                    },
+                    {
+                        data: 'code',
                     },
                     {
                         data: 'year',

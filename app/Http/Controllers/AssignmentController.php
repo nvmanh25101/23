@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\StudentStatusEnum;
 use App\Models\Assignment;
 use App\Models\Classroom;
 use App\Models\Course;
+use App\Models\Student;
 use App\Models\Subject;
 use App\Models\Teacher;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 class AssignmentController extends Controller
@@ -29,7 +32,7 @@ class AssignmentController extends Controller
 
     public function index()
     {
-        $teachers = Teacher::all();
+        $teachers = Teacher::query()->where('faculty_id', Auth::user()->faculty_id)->get();
         return view('assignment.create', compact('teachers'));
     }
 
@@ -189,7 +192,15 @@ class AssignmentController extends Controller
      */
     public function show($teacher_id)
     {
-        return view('assignment.show', compact('teacher_id'));
+        try {
+            if ($teacher_id == Auth::user()->id) {
+                return view('assignment.show', compact('teacher_id'));
+            } else {
+                return abort(404);
+            }
+        } catch (\Throwable $th) {
+            return abort(404);
+        }
     }
 
     public function assigmentsWeekly(Request $request, $teacher_id)
@@ -212,6 +223,22 @@ class AssignmentController extends Controller
      * @param  \App\Models\Assignment  $assignment
      * @return \Illuminate\Http\Response
      */
+    public function attendance($idAssignment)
+    {
+        try {
+            $assignment = Assignment::find($idAssignment);
+            $students = Student::where('classroom_id', $assignment['classroom_id'])->where('status', "!=", StudentStatusEnum::NGHI_LUON)->get();
+            return view('assignment.attendance', compact('students', 'idAssignment'));
+        } catch (\Throwable $th) {
+            return abort(404);
+        }
+        // dd($students);
+    }
+    public function process_attendance($idAssignment)
+    {
+        dd(1);
+    }
+
     public function edit(Assignment $assignment)
     {
         //

@@ -24,8 +24,7 @@ class AuthController extends Controller
 
         if (Auth::attempt($user)) {
             $auth = Auth::user()->level;
-            if ($auth === TeacherLevelEnum::GIANG_VIEN || $auth === TeacherLevelEnum::PHONG_DAO_TAO)
-            {
+            if ($auth === TeacherLevelEnum::GIANG_VIEN || $auth === TeacherLevelEnum::TRUONG_KHOA) {
                 $request->session()->regenerate();
                 return redirect('/');
             }

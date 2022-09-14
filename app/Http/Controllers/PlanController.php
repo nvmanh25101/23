@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Classroom;
+use App\Models\Major;
 use App\Models\Plan;
 use App\Models\Subject;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Yajra\Datatables\Datatables;
 
@@ -57,8 +59,13 @@ class PlanController extends Controller
      */
     public function create()
     {
-        $classRooms = Classroom::all();
-        // dd($subjects);
+        $faculty_id = Auth::user()->faculty_id;
+        $major_id = Major::query()->where('faculty_id', $faculty_id)->pluck('id')->toArray();
+        $plans = Plan::query()->DISTINCT()->get('classroom_id')->toArray();
+        $classRooms = Classroom::query()->whereIn('major_id', $major_id)->whereNotIn('id', function ($query) {
+            $query->select('classroom_id')->from('plans');
+        })->get();
+
         return view('plan.create', compact('classRooms'));
     }
 

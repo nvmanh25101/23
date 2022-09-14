@@ -112,6 +112,9 @@
                                                 <div class="form-group">
                                                     Tiết: ${element.lesson_start} - ${element.lesson_end}
                                                 </div>
+                                                <div class="form-group">
+                                                   <a href="{{ route('assignment.attendance') }}/${element.id}" class="btn bg-primary text-light">Điểm danh</a>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
