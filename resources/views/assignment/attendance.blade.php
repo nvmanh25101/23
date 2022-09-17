@@ -16,9 +16,6 @@
                     <td>
                         Điểm danh
                     </td>
-                    <td>
-                        Ghi chú
-                    </td>
                 </tr>
                 @foreach ($students as $key => $student)
                     <tr>
@@ -26,13 +23,24 @@
                             {{ $student->name }}
                         </td>
                         <td>
+                            <label for="no-ask-{{ $key }}">Đi học</label>
+                            <input type="radio" name="statuses[{{ $student->id }}]" value="1" id="no-ask-{{ $key }}"
+                                @if(isset($statuses[$student->id]) && $statuses[$student->id] === 1)
+                                    checked
+                                @endif
+                            >
+                            <label for="ask-{{ $key }}">Có phép</label>
+                            <input type="radio" name="statuses[{{ $student->id }}]" value="2" id="ask-{{ $key }}"
+                                   @if(isset($statuses[$student->id]) && $statuses[$student->id] === 2)
+                                       checked
+                                    @endif
+                            >
                             <label for="no-ask-{{ $key }}">Không phép</label>
-                            <input type="radio" name="att{{ $key }}" id="no-ask-{{ $key }}">
-                            <label for="ask-{{ $key }}"> Có phép</label>
-                            <input type="radio" name="att{{ $key }}" id="ask-{{ $key }}">
-                        </td>
-                        <td>
-                            <textarea name="" id="" cols="30" rows="2" class="form-control"></textarea>
+                            <input type="radio" name="statuses[{{ $student->id }}]" value="3" id="no-ask-{{ $key }}"
+                                   @if(isset($statuses[$student->id]) && $statuses[$student->id] === 3)
+                                       checked
+                                    @endif
+                            >
                         </td>
                     </tr>
                 @endforeach

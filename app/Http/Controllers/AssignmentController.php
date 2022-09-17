@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\StudentStatusEnum;
 use App\Models\Assignment;
+use App\Models\Attendance;
 use App\Models\Classroom;
 use App\Models\Course;
 use App\Models\Student;
@@ -22,9 +23,10 @@ class AssignmentController extends Controller
      * @return \Illuminate\Http\Response
      */
     public $ControllerName = 'Phân công giảng dạy';
+
     public function __construct()
     {
-        $pageTitle =  Route::currentRouteAction();
+        $pageTitle = Route::currentRouteAction();
         $pageTitle = explode('@', $pageTitle)[1];
         view()->share('ControllerName', $this->ControllerName);
         view()->share('pageTitle', $pageTitle);
@@ -70,7 +72,7 @@ class AssignmentController extends Controller
             }
         }
         for ($i = $request->lesson_start; $i <= $request->lesson_end; $i++) {
-            $lessonInsert[] =  (int)$i;
+            $lessonInsert[] = (int) $i;
         }
         if (count(array_intersect($lessonInsert, $lessonLearnedInDay)) > 0) {
             $error = [
@@ -82,8 +84,8 @@ class AssignmentController extends Controller
         } else {
             $classrooms = $classrooms->whereDoesntHave('assignments', function ($query) use ($request) {
                 $query->where('date', $request->date);
-                $query->whereRaw("((" . $request->lesson_start . ' between lesson_start and lesson_end)');
-                $query->orWhereRaw("(" . $request->lesson_end . ' between lesson_start and lesson_end))');
+                $query->whereRaw("((".$request->lesson_start.' between lesson_start and lesson_end)');
+                $query->orWhereRaw("(".$request->lesson_end.' between lesson_start and lesson_end))');
             });
             // dd($classrooms->toSql());
         }
@@ -106,23 +108,24 @@ class AssignmentController extends Controller
             $arrAssignmentInWeek[$i]['lesson_end'] = $request->lesson_end[$i];
             $arrAssignmentInWeek[$i]['classroom_id'] = $request->classroom_id[$i];
             $arrAssignmentInWeek[$i]['subject_id'] = $request->subject_id[$i];
-            $subject_assignment[$i] = $request->classroom_id[$i] . "-" . $request->subject_id[$i];
+            $subject_assignment[$i] = $request->classroom_id[$i]."-".$request->subject_id[$i];
         }
         $countTeachingInWeeks = array_count_values($subject_assignment); // (classroom_id) -  (subject_id)
         foreach ($countTeachingInWeeks as $key => $value) {
-            if ($value  < 2) {
+            if ($value < 2) {
                 foreach ($arrAssignmentInWeek as $item => $assignment) {
                     $classroom_id = $assignment['classroom_id'];
                     $subject_id = $assignment['subject_id'];
-                    if (explode('-', $key)[0] ==  $classroom_id && explode('-', $key)[1] == $subject_id) {
+                    if (explode('-', $key)[0] == $classroom_id && explode('-', $key)[1] == $subject_id) {
                         $totalLessonInSemester = Subject::find($subject_id)->credit * 15;
                         $totalLessonInWeek = $assignment['lesson_end'] - $assignment['lesson_start'] + 1;
                         $arrAssignmentInSemester[$key][0][] = $assignment;
-                        $totalWeek = (int)floor($totalLessonInSemester / $totalLessonInWeek);
+                        $totalWeek = (int) floor($totalLessonInSemester / $totalLessonInWeek);
                         for ($i = 1; $i < $totalWeek; $i++) {
                             $date = 7 * $i;
                             $arrAssignmentInSemester[$key][$i][0]['teacher_id'] = $assignment['teacher_id'];
-                            $arrAssignmentInSemester[$key][$i][0]['date'] = Carbon::createFromFormat('Y-m-d', $assignment['date'])->addDay($date)->format('Y-m-d');
+                            $arrAssignmentInSemester[$key][$i][0]['date'] = Carbon::createFromFormat('Y-m-d',
+                                $assignment['date'])->addDay($date)->format('Y-m-d');
                             $arrAssignmentInSemester[$key][$i][0]['lesson_start'] = $assignment['lesson_start'];
                             $arrAssignmentInSemester[$key][$i][0]['lesson_end'] = $assignment['lesson_end'];
                             $arrAssignmentInSemester[$key][$i][0]['classroom_id'] = $assignment['classroom_id'];
@@ -132,19 +135,19 @@ class AssignmentController extends Controller
                 }
             } else {
                 foreach ($arrAssignmentInWeek as $assignment) {
-                    $classroom_id = (int)$assignment['classroom_id'];
-                    $subject_id = (int)$assignment['subject_id'];
-                    if (explode('-', $key)[0] ==  $classroom_id && explode('-', $key)[1] == $subject_id) {
+                    $classroom_id = (int) $assignment['classroom_id'];
+                    $subject_id = (int) $assignment['subject_id'];
+                    if (explode('-', $key)[0] == $classroom_id && explode('-', $key)[1] == $subject_id) {
                         $totalLessonInSemester = Subject::find($subject_id)->credit * 15;
                         $totalLessonInWeek += ($assignment['lesson_end'] - $assignment['lesson_start'] + 1);
                         $learnedLesson += ($assignment['lesson_end'] - $assignment['lesson_start'] + 1);
-                        $totalWeek = (int)floor($totalLessonInSemester / $totalLessonInWeek);
+                        $totalWeek = (int) floor($totalLessonInSemester / $totalLessonInWeek);
                     }
                 }
                 foreach ($arrAssignmentInWeek as $assignment) {
                     $classroom_id = $assignment['classroom_id'];
                     $subject_id = $assignment['subject_id'];
-                    if (explode('-', $key)[0] ==  $classroom_id && explode('-', $key)[1] == $subject_id) {
+                    if (explode('-', $key)[0] == $classroom_id && explode('-', $key)[1] == $subject_id) {
                         $arrAssignmentInSemester[$key][0][] = $assignment;
                     }
                 }
@@ -152,7 +155,8 @@ class AssignmentController extends Controller
                     foreach ($arrAssignmentInSemester[$key][0] as $item => $value) {
                         $date = 7 * $i;
                         $arrAssignmentInSemester[$key][$i][$item]['teacher_id'] = $value['teacher_id'];
-                        $arrAssignmentInSemester[$key][$i][$item]['date'] = Carbon::createFromFormat('Y-m-d', $value['date'])->addDay($date)->format('Y-m-d');
+                        $arrAssignmentInSemester[$key][$i][$item]['date'] = Carbon::createFromFormat('Y-m-d',
+                            $value['date'])->addDay($date)->format('Y-m-d');
                         $arrAssignmentInSemester[$key][$i][$item]['lesson_start'] = $value['lesson_start'];
                         $arrAssignmentInSemester[$key][$i][$item]['lesson_end'] = $value['lesson_end'];
                         $arrAssignmentInSemester[$key][$i][$item]['classroom_id'] = $value['classroom_id'];
@@ -173,8 +177,8 @@ class AssignmentController extends Controller
         foreach (array_filter($arrAssignmentInSemester) as $key => $AssignmentInSemester) {
             $arrAssignmentInSemester[$key] = array_filter($AssignmentInSemester);
         }
-        foreach ($arrAssignmentInSemester as  $AssignmentInSemester) {
-            foreach ($AssignmentInSemester as $key =>  $item) {
+        foreach ($arrAssignmentInSemester as $AssignmentInSemester) {
+            foreach ($AssignmentInSemester as $key => $item) {
                 foreach ($item as $key => $each) {
                     Assignment::insert($each);
                     unset($each);
@@ -227,16 +231,43 @@ class AssignmentController extends Controller
     {
         try {
             $assignment = Assignment::find($idAssignment);
-            $students = Student::where('classroom_id', $assignment['classroom_id'])->where('status', "!=", StudentStatusEnum::NGHI_LUON)->get();
-            return view('assignment.attendance', compact('students', 'idAssignment'));
+            $statuses = [];
+
+            $attendances = Attendance::query()
+                ->select([
+                    'student_id',
+                    'status',
+                ])
+                ->where('assignment_id', $idAssignment)
+                ->get();
+
+            foreach ($attendances as $attendance) {
+                $statuses[$attendance->student_id] = $attendance->status;
+            }
+
+            $students = Student::where('classroom_id', $assignment['classroom_id'])->where('status', "!=",
+                StudentStatusEnum::NGHI_LUON)->get();
+            return view('assignment.attendance', compact('students', 'idAssignment', 'statuses'));
         } catch (\Throwable $th) {
             return abort(404);
         }
         // dd($students);
     }
-    public function process_attendance($idAssignment)
+
+    public function process_attendance(Request $request, $idAssignment)
     {
-        dd(1);
+        $statuses = $request->get('statuses');
+
+        foreach ($statuses as $studentId => $status) {
+            Attendance::updateOrCreate([
+                'student_id' => $studentId,
+                'assignment_id' => $idAssignment,
+            ], [
+                'status' => $status,
+            ]);
+        }
+
+        return redirect()->route('assignment.attendance', $idAssignment);
     }
 
     public function edit(Assignment $assignment)
